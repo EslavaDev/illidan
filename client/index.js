@@ -1,18 +1,33 @@
-/* eslint-disable node/no-unpublished-require, node/no-extraneous-require, import/no-extraneous-dependencies */
+/* eslint-disable node/no-unpublished-require, node/no-extraneous-require, node/no-extraneous-import, node/no-unsupported-features/es-syntax, import/no-extraneous-dependencies */
 
-const React = require('react');
-const ReactDOM = require('react-dom');
-const { default: i18nBuilder } = require('i18next');
-const { initReactI18next, useSSR } = require('react-i18next');
-const {
-  default: LanguageDetector,
-} = require('i18next-browser-languagedetector');
-const { loadableReady } = require('@loadable/component');
+import { createElement, Fragment } from 'react';
+import { hydrate as ReactDOMHydrate } from 'react-dom';
+import i18nBuilder from 'i18next';
+import { initReactI18next, useSSR } from 'react-i18next';
+import LanguageDetector from 'i18next-browser-languagedetector';
+import { loadableReady } from '@loadable/component';
+import { datadogRum } from '@datadog/browser-rum';
+
+if (process.env.NODE_ENV !== 'development') {
+  datadogRum.init({
+    applicationId: process.env.DATADOG_APP_ID,
+    clientToken: process.env.DATADOG_CLIENT_TOKEN,
+    site: 'datadoghq.com',
+    service: process.env.DATADOG_SERVICE,
+    // Specify a version number to identify the deployed version of your application in Datadog
+    version: process.env.APP_VERSION,
+    sampleRate: 100,
+    trackInteractions: true,
+    // eslint-disable-next-line no-restricted-globals,no-undef
+    env: location.pathname,
+  });
+}
 
 // eslint-disable-next-line no-undef,no-underscore-dangle
 const { __I18N__: i18n, __PRELOADED_STATE__: state } = window;
 
-const hydrate = (stateLoaderFn) => {
+// eslint-disable-next-line import/prefer-default-export
+export const hydrate = (stateLoaderFn) => {
   const Component = stateLoaderFn(state);
   return i18nBuilder
     .use(LanguageDetector)
@@ -31,17 +46,15 @@ const hydrate = (stateLoaderFn) => {
     .then(() => {
       const InitSSR = () => {
         useSSR(i18n.store, i18n.language);
-        return React.createElement(React.Fragment, {}, Component);
+        return createElement(Fragment, {}, Component);
       };
 
       return loadableReady(() => {
-        ReactDOM.hydrate(
-          React.createElement(InitSSR),
+        ReactDOMHydrate(
+          createElement(InitSSR),
           // eslint-disable-next-line no-undef
           document.getElementById('app'),
         );
       });
     });
 };
-
-module.exports = { hydrate };

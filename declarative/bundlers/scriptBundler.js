@@ -16,7 +16,7 @@ class ScriptBundler {
     this.config = { ...defaults, ...config };
   }
 
-  async joinScripts() {
+  joinScripts() {
     const scripts = Script.rewind();
     const plain = scripts.map((script) => ScriptBundler.getScriptTag(script));
     return plain.join('\n');

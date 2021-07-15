@@ -39,6 +39,7 @@ const initApp = ({
         directives: {
           ...helmet.contentSecurityPolicy.getDefaultDirectives(),
           'script-src': ["'self'", "'unsafe-inline'", 'conektame.io'],
+          'connect-src': ["'self'", 'rum-http-intake.logs.datadoghq.com'],
           'img-src': [
             "'self'",
             'https://s3-conektacdn-staging.s3.amazonaws.com',

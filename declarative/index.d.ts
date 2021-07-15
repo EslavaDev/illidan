@@ -1,4 +1,3 @@
-export { Head } from './Head'
-export { Style } from './Style'
-export { Page } from './Page'
-export { Script } from './Script'
+import Page from './Page'
+
+export { Page }

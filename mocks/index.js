@@ -41,6 +41,9 @@ module.exports = function (interceptRoutes) {
   const interceptor = createInterceptor({
     modules: [interceptClientRequest],
     async resolver(request) {
+      if (!isMatch(request.url.href, interceptRoutes)) {
+        return;
+      }
       const mockPath = getMockPath(request);
       const exist = await fse.pathExists(mockPath);
       if (!exist) {

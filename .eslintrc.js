@@ -11,4 +11,7 @@ module.exports = {
     'class-methods-use-this': 'off',
     'global-require': 'off',
   },
+  parserOptions: {
+    sourceType: 'module',
+  },
 };

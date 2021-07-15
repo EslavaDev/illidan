@@ -3,10 +3,10 @@
 if (process.env.IS_BROWSER) {
   module.exports = () => null;
 } else {
-  const React = require('react');
+  const { Component } = require('react');
   const withSideEffect = require('react-side-effect');
 
-  class LocalScript extends React.Component {
+  class LocalScript extends Component {
     render() {
       return null;
     }
