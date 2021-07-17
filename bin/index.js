@@ -1,47 +1,16 @@
 #!/usr/bin/env node
 const yargs = require('yargs');
-const { spawn, exec } = require('child_process');
-const { promisify } = require('util');
 const createPageScript = require('./create-page');
+const { buildWebpackClient, buildWebpackDev } = require('./build-client');
+const { buildServerLib, runServerDev } = require('./build-server');
 
 const AVAILABLE_COMMANDS = {
   CLIENT_BUILD: 'client-build',
   CLIENT_DEV: 'client-dev',
   SERVER_BUILD: 'server-build',
-  SERVER_DEV: 'server-dev',
+  SERVER_DEV: 'server-dev <entry>',
   CREATE_PAGE: 'create-page',
 };
-
-const execPromise = promisify(exec);
-
-const webpackConfigPath = require.resolve('../config/webpack/webpack.config');
-
-function buildWebpack({ watch, mode }) {
-  const webpackArgs = [
-    'webpack',
-    `--config=${webpackConfigPath}`,
-    `--mode=${mode}`,
-  ];
-  webpackArgs.push(...(watch ? ['--watch'] : []));
-  spawn('npx', webpackArgs, {
-    env: {
-      IS_BROWSER: true,
-      PATH: process.env.PATH,
-      ...process.env,
-      NODE_ENV: mode,
-    },
-    cwd: process.cwd(),
-    stdio: 'inherit',
-  });
-}
-
-function buildWebpackDev({ watch }) {
-  buildWebpack({ mode: 'development', watch });
-}
-async function buildWebpackClient() {
-  await execPromise('npx rimraf public');
-  buildWebpack({ mode: 'production' });
-}
 
 yargs(process.argv.slice(2))
   .usage('Usage: $0 <command> [options]')
@@ -65,24 +34,33 @@ yargs(process.argv.slice(2))
   )
   .command(
     AVAILABLE_COMMANDS.SERVER_DEV,
-    'Transpile server files for development',
+    'Run development server',
     (command) =>
-      command.option('w', {
-        alias: 'watch',
-        demandOption: false,
-        describe: 'Watch file changes',
-        type: 'boolean',
-      }),
+      command
+        .option('w', {
+          alias: 'watch',
+          demandOption: false,
+          describe: 'Watch file changes',
+          type: 'boolean',
+        })
+        .positional('entry', {
+          demandOption: true,
+          describe: 'Entrypoint',
+          type: 'string',
+        }),
+    runServerDev,
   )
   .command(
     AVAILABLE_COMMANDS.SERVER_BUILD,
     'Transpile server files for production',
+    {},
+    buildServerLib,
   )
   .command(
     AVAILABLE_COMMANDS.CREATE_PAGE,
     'Create page boilerplate',
-    (yargs) =>
-      yargs.option('p', {
+    (command) =>
+      command.option('p', {
         alias: 'page',
         demandOption: false,
         describe: 'Name of the page (Only for <create-page> command)',
@@ -98,7 +76,7 @@ yargs(process.argv.slice(2))
   .example('$0 server-dev -w', 'Transpile server (dev) and watch file changes')
   .help()
   .epilog(`Copyright ${new Date().getFullYear()}`)
-  .check((checkArgv, options) => {
+  .check((checkArgv) => {
     const commands = checkArgv._;
     if (!commands.length) {
       throw Error('No commands provided');

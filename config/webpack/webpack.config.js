@@ -14,13 +14,14 @@ module.exports = (env, { mode }) =>
       path: path.resolve(root, 'public'),
     },
     // eslint-disable-next-line import/no-dynamic-require
-    entry: require(path.resolve(root, 'webpack.entries.json')),
+    entry: require(path.resolve(root, 'conekta.entries.json')),
     plugins: [
       new webpack.DefinePlugin({
         'process.env.IS_BROWSER': process.env.IS_BROWSER,
       }),
       new Dotenv({
         path: `${root}/.env.${mode}`,
+        allowEmptyValues: true,
       }),
       new LoadablePlugin(),
     ],

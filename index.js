@@ -14,6 +14,7 @@ const { LogRoute } = require('./middlewares/logRoute');
 const { layoutMiddleware } = require('./middlewares/layout');
 const express = require('./server');
 const { initI18n } = require('./i18n');
+const { getLogPrefix } = require('./helpers/log');
 
 function handleFatalError(err) {
   console.error(chalk.bgRed.white('UNHANDLED ERROR'), err.message);
@@ -107,7 +108,9 @@ const initApp = ({
     const server = https.createServer(options, app);
 
     server.listen(port, () => {
-      console.log('listening on port ', port);
+      console.log(
+        `${getLogPrefix('info')} Listening on port ${chalk.greenBright(port)}`,
+      );
     });
   });
 };
