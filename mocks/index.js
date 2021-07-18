@@ -9,6 +9,7 @@ const fse = require('fs-extra');
 const path = require('path');
 const chalk = require('chalk');
 const { isMatch } = require('matcher');
+const { getLogPrefix } = require('../helpers/log');
 
 function safeParseJson(string) {
   try {
@@ -49,7 +50,12 @@ module.exports = function (interceptRoutes) {
       if (!exist) {
         return;
       }
-      console.log(chalk.bgGreen.white('Reading mock from: '), mockPath);
+      console.log(
+        `${getLogPrefix('info')} ${chalk.gray(
+          '[dev-mocks]',
+        )} : ${chalk.blueBright('Reading mock from: ')}`,
+        mockPath,
+      );
       try {
         const { headers, status, statusText, body } = await fse.readJson(
           mockPath,

@@ -35,7 +35,7 @@ module.exports = {
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
-          options: require('../babel/.babelrc'),
+          options: require('../babel/babel.conf'),
         },
       },
     ],

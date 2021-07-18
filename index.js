@@ -1,3 +1,8 @@
+const path = require('path');
+require('dotenv').config({
+  path: path.resolve(process.cwd(), `.env.${process.env.NODE_ENV}`),
+});
+
 const fs = require('fs');
 const { resolve } = require('path');
 const https = require('https');
@@ -13,7 +18,7 @@ const oidc = require('./oidc');
 const { LogRoute } = require('./middlewares/logRoute');
 const { layoutMiddleware } = require('./middlewares/layout');
 const express = require('./server');
-const { initI18n } = require('./i18n');
+const { initI18n } = require('./i18n/_server');
 const { getLogPrefix } = require('./helpers/log');
 
 function handleFatalError(err) {
@@ -24,14 +29,16 @@ function handleFatalError(err) {
 process.on('uncaughtException', handleFatalError);
 process.on('unhandledRejection', handleFatalError);
 
-const initApp = ({
-  enableOidcRoutes,
-  basePath,
-  appRouter,
-  apiRouter,
-  port,
-  i18n,
-}) => {
+const initApp = ({ enableOidcRoutes, appRouter, apiRouter, i18n }) => {
+  const basePath = process.env.APP_BASE_PATH;
+  const port = process.env.NODE_PORT;
+  if (!port) {
+    throw Error(`Port not provided in: process.env.NODE_PORT`);
+  }
+  if (!port) {
+    throw Error(`App base path not provided in: process.env.APP_BASE_PATH`);
+  }
+
   const app = express();
 
   app.use(

@@ -52,11 +52,11 @@ function runServerDev({ entry, watch }) {
       'nodemon',
       '--quiet',
       '-e',
-      '"ts,tsx,json"',
+      'ts,tsx,json',
       '-i',
-      '"src/**/*.spec.ts,src/**/*.test.ts"',
+      'src/**/*.spec.ts,src/**/*.test.ts',
       '-w',
-      'src',
+      'src/**/*',
       '-x',
       `npx ${babelNodeArgs.join(' ')}`,
     ];
@@ -74,6 +74,14 @@ function runServerDev({ entry, watch }) {
       } else if (event.type === 'crash') {
         console.log(`${getLogPrefix('error')} Script crashed for some reason`);
       }
+    });
+
+    nodemon.on('close', (code) => {
+      console.log(`child process close all stdio with code ${code}`);
+    });
+
+    nodemon.on('exit', (code) => {
+      console.log(`child process exited with code ${code}`);
     });
     return;
   }

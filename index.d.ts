@@ -7,8 +7,6 @@ interface I18nArgs {
 }
 
 interface Args {
-    basePath: string;
-    port: number | string;
     enableOidcRoutes?: boolean;
     appRouter?: Router;
     apiRouter?: Router;
