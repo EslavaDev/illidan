@@ -1,18 +1,19 @@
 /* eslint-disable node/no-unpublished-require, node/no-extraneous-require, import/no-extraneous-dependencies */
 
-const { createElement } = require('react');
-const path = require('path');
+const { createElement, Fragment } = require('react');
 const { renderToStaticMarkup, renderToString } = require('react-dom/server');
 const { ServerStyleSheet } = require('styled-components');
 const { isValidElementType } = require('react-is');
 const { ChunkExtractor } = require('@loadable/server');
 const serialize = require('serialize-javascript');
 const { I18nextProvider } = require('react-i18next');
-const { ScriptBundler } = require('../declarative/bundlers/scriptBundler');
+
+const { Helmet: ReactHelmet } = require('react-helmet');
+const { getStatsFilePath } = require('../helpers/statsFile');
 
 function SSRComponent({ children, i18n }) {
-  return createElement(I18nextProvider, {
-    i18n,
+  return createElement(i18n ? I18nextProvider : Fragment, {
+    i18n: i18n || null,
     children,
   });
 }
@@ -35,10 +36,6 @@ function getHeadMetaTags({ title }) {
       <meta http-equiv="X-UA-Compatible" content="ie=edge">`;
 }
 
-function getStatsFilePath() {
-  return path.resolve(`${process.cwd()}/public/loadable-stats.json`);
-}
-
 function buildComponentRenderer({ extractor, sheet, Component, i18n }) {
   return extractor.collectChunks(
     sheet.collectStyles(
@@ -54,14 +51,17 @@ function renderHydrate({ i18n, clientName, basePath, Component, title }) {
   const app = renderToString(
     buildComponentRenderer({ extractor, sheet, Component, i18n }),
   );
-  const translation = i18n.store.data[i18n.language];
-  const i18nClient = {
-    store: { [i18n.language]: translation },
-    language: i18n.language,
-  };
+  const helmetTags = ReactHelmet.renderStatic();
+  let i18nClient;
+  if (i18n) {
+    const translation = i18n.store.data;
+    i18nClient = {
+      store: translation,
+      language: i18n.language,
+    };
+  }
   // Collect scripts
   const loadableScriptTags = extractor.getScriptTags();
-  const innerScripts = new ScriptBundler().joinScripts();
 
   // Collect styles
   const loadableStyleTags = extractor.getStyleTags();
@@ -69,27 +69,27 @@ function renderHydrate({ i18n, clientName, basePath, Component, title }) {
 
   sheet.seal();
 
+  const langAttr = i18n && i18n.language ? `lang="${i18n.language}"` : '';
+
   return `
 <!doctype html>
-<html lang="${i18n.language}">
+<html ${langAttr} ${helmetTags.htmlAttributes.toString()}>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta name="HandheldFriendly" content="true"/> 
-    <meta name="application-name" content="${title}" /> 
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    ${getHeadMetaTags({ title })}
     <title>${title}</title>
     ${styleTags}
     ${loadableStyleTags}
+    ${helmetTags.meta.toString()}
+    ${helmetTags.link.toString()}
+    ${helmetTags.style.toString()}
 </head>
-<body>
+<body ${helmetTags.bodyAttributes.toString()}>
     <div id="app">${app}</div>
-    <script>(function(){window.__I18N__ = ${serialize(
-      i18nClient,
-    )}}).apply(window)</script>
-    ${innerScripts}
+    <script>(function(){window.__I18N__ = ${
+      i18nClient ? serialize(i18nClient) : null
+    }}).apply(window)</script>
     ${loadableScriptTags}
+    ${helmetTags.script.toString()}
 </body>
 </html>`;
 }
@@ -101,23 +101,30 @@ function renderStatic({ i18n, clientName, basePath, Component, title }) {
   const app = renderToStaticMarkup(
     buildComponentRenderer({ extractor, sheet, Component, i18n }),
   );
+  const helmetTags = ReactHelmet.renderStatic();
 
   // Collect styles
   const loadableStyleTags = extractor.getStyleTags();
-  const styleTags = sheet.getStyleTags();
+  const styledComponentsTags = sheet.getStyleTags();
 
   sheet.seal();
+
+  const langAttr = i18n && i18n.language ? `lang="${i18n.language}"` : '';
   return `
 <!doctype html>
-<html lang="${i18n.language}">
+<html ${langAttr} ${helmetTags.htmlAttributes.toString()}>
 <head>
     ${getHeadMetaTags({ title })}
     <title>${title}</title>
-    ${styleTags}
+    ${styledComponentsTags}
     ${loadableStyleTags}
+    ${helmetTags.meta.toString()}
+    ${helmetTags.link.toString()}
+    ${helmetTags.style.toString()}
 </head>
-<body>
+<body ${helmetTags.bodyAttributes.toString()}>
     <div id="app">${app}</div>
+    ${helmetTags.script.toString()}
 </body>
 </html>`;
 }

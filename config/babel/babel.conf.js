@@ -18,6 +18,7 @@ module.exports = {
       },
     ],
     ['@babel/preset-typescript'],
+    '@babel/preset-flow',
   ],
   plugins: [
     [

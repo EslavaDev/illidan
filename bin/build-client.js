@@ -12,7 +12,7 @@ function buildWebpack({ watch, mode }) {
     `--mode=${mode}`,
   ];
   webpackArgs.push(...(watch ? ['--watch'] : []));
-  spawn('npx', webpackArgs, {
+  spawn(/^win/.test(process.platform) ? 'npx.cmd' : 'npx', webpackArgs, {
     env: {
       IS_BROWSER: true,
       PATH: process.env.PATH,
@@ -28,7 +28,9 @@ function buildWebpackDev({ watch }) {
   buildWebpack({ mode: 'development', watch });
 }
 async function buildWebpackClient() {
-  await execPromise('npx rimraf public');
+  await execPromise(
+    `${/^win/.test(process.platform) ? 'npx.cmd' : 'npx'} rimraf public`,
+  );
   buildWebpack({ mode: 'production' });
 }
 

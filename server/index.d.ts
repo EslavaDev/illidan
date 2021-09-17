@@ -17,13 +17,10 @@ declare global {
     namespace Express {
         export interface Response {
             reactRender: (Component: React.ComponentType, opts: reactRenderOpts) => Promise<void> | void;
+            sendJsAsset: (assetName: string) => void
         }
         export interface Request extends  I18NextRequest {
             locals: Record<string, any>;
-            user: Record<string, any>;
-            userContext: Record<string, any>;
-            logout(): void
-            isAuthenticated(): boolean
         }
     }
 }

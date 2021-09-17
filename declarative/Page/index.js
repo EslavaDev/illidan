@@ -7,16 +7,22 @@ if (process.env.IS_BROWSER) {
     createElement('div', { className }, children);
 } else {
   const serialize = require('serialize-javascript');
-  const Script = require('../Script');
+  const Helmet = require('react-helmet').default;
   const Page = ({ children, state, className }) =>
     createElement(
       'div',
       { className },
       state &&
         createElement(
-          Script,
+          Helmet,
           {},
-          `window.__PRELOADED_STATE__ = ${serialize(state, { isJSON: true })};`,
+          createElement(
+            'script',
+            {},
+            `window.__PRELOADED_STATE__ = ${serialize(state, {
+              isJSON: true,
+            })};`,
+          ),
         ),
       children,
     );

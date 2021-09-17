@@ -1,25 +1,25 @@
 const path = require('path');
 require('dotenv').config({
-  path: path.resolve(process.cwd(), `.env.${process.env.NODE_ENV}`),
+  path: path.resolve(
+    process.cwd(),
+    `.env.${process.env.NODE_ENV || 'development'}`,
+  ),
 });
 
 const fs = require('fs');
 const { resolve } = require('path');
 const https = require('https');
 
-const session = require('express-session');
 const helmet = require('helmet');
-const redis = require('redis');
-const RedisStore = require('connect-redis')(session);
 const { handle } = require('i18next-http-middleware');
 const i18next = require('i18next');
 const chalk = require('chalk');
-const oidc = require('./oidc');
 const { LogRoute } = require('./middlewares/logRoute');
 const { layoutMiddleware } = require('./middlewares/layout');
 const express = require('./server');
 const { initI18n } = require('./i18n/_server');
 const { getLogPrefix } = require('./helpers/log');
+const { redirectToChunkMiddleware } = require('./middlewares/redirectToChunk');
 
 function handleFatalError(err) {
   console.error(chalk.bgRed.white('UNHANDLED ERROR'), err.message);
@@ -29,8 +29,8 @@ function handleFatalError(err) {
 process.on('uncaughtException', handleFatalError);
 process.on('unhandledRejection', handleFatalError);
 
-const initApp = ({ enableOidcRoutes, appRouter, apiRouter, i18n }) => {
-  const basePath = process.env.APP_BASE_PATH;
+const initApp = ({ appRouter, apiRouter, i18n }) => {
+  const basePath = process.env.APP_BASE_PATH || '';
   const port = process.env.NODE_PORT;
   if (!port) {
     throw Error(`Port not provided in: process.env.NODE_PORT`);
@@ -64,19 +64,7 @@ const initApp = ({ enableOidcRoutes, appRouter, apiRouter, i18n }) => {
 
   app.use(express.json());
 
-  const redisClient = redis.createClient(6379);
-
   app.set('trust proxy', 1);
-
-  app.use(
-    session({
-      secret: 'this-should-be-very-random',
-      resave: true,
-      saveUninitialized: false,
-      store: new RedisStore({ client: redisClient }),
-      cookie: { secure: true },
-    }),
-  );
 
   app.use(LogRoute);
 
@@ -84,41 +72,29 @@ const initApp = ({ enableOidcRoutes, appRouter, apiRouter, i18n }) => {
     key: fs.readFileSync(resolve(__dirname, './config/cert/my_cert.key')),
     cert: fs.readFileSync(resolve(__dirname, './config/cert/my_cert.crt')),
   };
+  app.get(`${basePath}/ping`, (_, res) => res.send('pong'));
+  app.use(
+    `${basePath}/static`,
+    express.static(resolve(`${process.cwd()}/public`)),
+  );
+  app.use(redirectToChunkMiddleware(basePath));
+  if (i18n) {
+    initI18n(i18n);
+    app.use(handle(i18next));
+  }
+  if (appRouter) {
+    app.use(basePath, layoutMiddleware(basePath), appRouter);
+  }
+  if (apiRouter) {
+    app.use(`${basePath}/api`, apiRouter);
+  }
 
-  oidc.on('error', (err) => {
-    console.error(err);
-    process.exit(1);
-  });
+  const server = https.createServer(options, app);
 
-  oidc.on('ready', (sessionRouter, oidcRoutesRouter, errCastRouter) => {
-    app.use(sessionRouter);
-    if (enableOidcRoutes) {
-      app.use(oidcRoutesRouter);
-    }
-    app.use(errCastRouter);
-    app.get(`${basePath}/ping`, (_, res) => res.send('pong'));
-    app.use(
-      `${basePath}/static`,
-      express.static(resolve(`${process.cwd()}/public`)),
+  server.listen(port, () => {
+    console.log(
+      `${getLogPrefix('info')} Listening on port ${chalk.greenBright(port)}`,
     );
-    if (i18n) {
-      initI18n(i18n);
-      app.use(handle(i18next));
-    }
-    if (appRouter) {
-      app.use(basePath, layoutMiddleware(basePath), appRouter);
-    }
-    if (apiRouter) {
-      app.use(`${basePath}/api`, apiRouter);
-    }
-
-    const server = https.createServer(options, app);
-
-    server.listen(port, () => {
-      console.log(
-        `${getLogPrefix('info')} Listening on port ${chalk.greenBright(port)}`,
-      );
-    });
   });
 };
 

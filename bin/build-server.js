@@ -1,5 +1,6 @@
 const { spawn, exec } = require('child_process');
 const { promisify } = require('util');
+const nodemon = require('nodemon');
 const { getLogPrefix } = require('../helpers/log');
 
 const execPromise = promisify(exec);
@@ -8,7 +9,11 @@ const babelConfigPath = require.resolve('../config/babel/babel.conf');
 
 async function buildServerLib() {
   const buildFolder = 'lib';
-  await execPromise(`npx rimraf ${buildFolder}`);
+  await execPromise(
+    `${
+      /^win/.test(process.platform) ? 'npx.cmd' : 'npx'
+    } rimraf ${buildFolder}`,
+  );
   const babelArgs = [
     'babel',
     '--config-file',
@@ -21,9 +26,9 @@ async function buildServerLib() {
     '--ignore',
     '**/*.test.*,**/*.spec.*,**/client/**,**/*.d.ts',
   ];
-  spawn('npx', babelArgs, {
+  spawn(/^win/.test(process.platform) ? 'npx.cmd' : 'npx', babelArgs, {
     env: {
-      IS_BROWSER: true,
+      IS_BROWSER: false,
       PATH: process.env.PATH,
       ...process.env,
       NODE_ENV: 'production',
@@ -37,54 +42,51 @@ function runServerDev({ entry, watch }) {
   const logPrefixInfo = getLogPrefix('info');
   console.log(`${logPrefixInfo} Dev server started`);
   const babelRuntime = require.resolve('../config/babel/babel.server');
-  const babelNodeArgs = ['babel-node', '-r', babelRuntime, entry];
+  const babelNodeArgs = ['babel-node', '-r', babelRuntime];
   const spawnConfig = {
     env: {
       PATH: process.env.PATH,
+      IS_BROWSER: false,
       ...process.env,
       NODE_ENV: 'development',
     },
     cwd: process.cwd(),
-    stdio: ['inherit', 'inherit', 'inherit', 'ipc'],
+    stdio: 'inherit',
   };
   if (watch) {
-    const nodemonArgs = [
-      'nodemon',
-      '--quiet',
-      '-e',
-      'ts,tsx,json',
-      '-i',
-      'src/**/*.spec.ts,src/**/*.test.ts',
-      '-w',
-      'src/**/*',
-      '-x',
-      `npx ${babelNodeArgs.join(' ')}`,
-    ];
-    const nodemon = spawn('npx', nodemonArgs, spawnConfig);
-    nodemon.on('message', (event) => {
-      if (event.type === 'boot') {
-        console.log(`${logPrefixInfo} Watching file changes`);
-        console.log(
-          `${logPrefixInfo} You can type 'rs' in the terminal to restart the service manually`,
-        );
-      } else if (event.type === 'restart') {
-        console.log(
-          `${logPrefixInfo} Restarting dev server due to file changes...`,
-        );
-      } else if (event.type === 'crash') {
-        console.log(`${getLogPrefix('error')} Script crashed for some reason`);
-      }
+    const nodemonConfig = {
+      watch: 'src/**/*',
+      ext: 'ts,tsx,json',
+      ignore: 'src/**/*.spec.ts,src/**/*.test.ts',
+      execMap: {
+        ts: babelNodeArgs.join(' '),
+      },
+      script: entry,
+    };
+    nodemon.on('boot', () => {
+      console.log(`${logPrefixInfo} Watching file changes`);
+      console.log(
+        `${logPrefixInfo} You can type 'rs' in the terminal to restart the service manually`,
+      );
+    });
+    nodemon(nodemonConfig);
+    nodemon.on('restart', () => {
+      console.log(`${logPrefixInfo} Restarting dev server due to file changes`);
+    });
+    nodemon.on('crash', () => {
+      console.log(`${getLogPrefix('error')} Script crashed for some reason`);
     });
 
-    nodemon.on('close', (code) => {
-      console.log(`child process close all stdio with code ${code}`);
-    });
-
-    nodemon.on('exit', (code) => {
-      console.log(`child process exited with code ${code}`);
+    nodemon.on('error', (err) => {
+      console.log('An error occurred');
+      console.log(err);
     });
     return;
   }
-  spawn('npx', babelNodeArgs, spawnConfig);
+  spawn(
+    /^win/.test(process.platform) ? 'npx.cmd' : 'npx',
+    [...babelNodeArgs, entry],
+    spawnConfig,
+  );
 }
 module.exports = { buildServerLib, runServerDev };
