@@ -28,7 +28,6 @@ Create your first router.
 ```jsx
 // src/app/server.js
 import { Router } from '@conekta/cronos/server';
-import { paymentLink } from "app/pages/hosted-checkout/controller";
 
 const router = Router();
 
