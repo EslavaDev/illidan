@@ -5,7 +5,7 @@ const { getLogPrefix } = require('../helpers/log');
 
 const execPromise = promisify(exec);
 
-const babelConfigPath = require.resolve('../config/babel/babel.conf');
+const babelConfigPath = require.resolve('../config/babel/babel.conf.server');
 
 async function buildServerLib() {
   const buildFolder = 'lib';
@@ -25,13 +25,14 @@ async function buildServerLib() {
     './lib',
     '--ignore',
     '**/*.test.*,**/*.spec.*,**/client/**,**/*.d.ts',
+    '--source-maps',
   ];
   spawn(/^win/.test(process.platform) ? 'npx.cmd' : 'npx', babelArgs, {
     env: {
       IS_BROWSER: false,
       PATH: process.env.PATH,
       ...process.env,
-      NODE_ENV: 'production',
+      NODE_ENV: process.env.NODE_ENV || 'development',
     },
     cwd: process.cwd(),
     stdio: 'inherit',

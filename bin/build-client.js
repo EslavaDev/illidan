@@ -17,7 +17,7 @@ function buildWebpack({ watch, mode }) {
       IS_BROWSER: true,
       PATH: process.env.PATH,
       ...process.env,
-      NODE_ENV: mode,
+      NODE_ENV: process.env.NODE_ENV || 'development',
     },
     cwd: process.cwd(),
     stdio: 'inherit',

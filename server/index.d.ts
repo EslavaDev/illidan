@@ -5,11 +5,9 @@ import { I18NextRequest } from "i18next-http-middleware";
 interface reactRenderOpts {
     title: string;
     /**
-     * clientName MUST BE the webpack entry name, this will be use to load hydrate chunks and styles
-     *
-     * it's REQUIRED even if you will render static markup (style loading).
+     * clientName MUST BE the webpack entry name, this will be use to load chunks and styles
      */
-    clientName: string;
+    clientName?: string;
     toStaticMarkup?: boolean;
 }
 

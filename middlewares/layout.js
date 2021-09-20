@@ -37,6 +37,11 @@ function getHeadMetaTags({ title }) {
 }
 
 function buildComponentRenderer({ extractor, sheet, Component, i18n }) {
+  if (!extractor) {
+    return sheet.collectStyles(
+      createElement(SSRComponent, { i18n }, createElement(Component)),
+    );
+  }
   return extractor.collectChunks(
     sheet.collectStyles(
       createElement(SSRComponent, { i18n }, createElement(Component)),
@@ -96,15 +101,19 @@ function renderHydrate({ i18n, clientName, basePath, Component, title }) {
 
 function renderStatic({ i18n, clientName, basePath, Component, title }) {
   const statsPath = getStatsFilePath();
-  const extractor = getChunkExtractor({ statsPath, clientName, basePath });
+  let extractor;
+  let loadableStyleTags = '';
+  if (clientName) {
+    extractor = getChunkExtractor({ statsPath, clientName, basePath });
+    loadableStyleTags = extractor.getStyleTags();
+  }
   const sheet = new ServerStyleSheet();
   const app = renderToStaticMarkup(
     buildComponentRenderer({ extractor, sheet, Component, i18n }),
   );
   const helmetTags = ReactHelmet.renderStatic();
 
-  // Collect styles
-  const loadableStyleTags = extractor.getStyleTags();
+  // Collect styled component tags
   const styledComponentsTags = sheet.getStyleTags();
 
   sheet.seal();

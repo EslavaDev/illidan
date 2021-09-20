@@ -1,14 +1,10 @@
+const env = process.env.NODE_ENV || 'development';
+
 const path = require('path');
 require('dotenv').config({
-  path: path.resolve(
-    process.cwd(),
-    `.env.${process.env.NODE_ENV || 'development'}`,
-  ),
+  path: path.resolve(process.cwd(), `.env.${env}`),
 });
-
-const fs = require('fs');
 const { resolve } = require('path');
-const https = require('https');
 
 const helmet = require('helmet');
 const { handle } = require('i18next-http-middleware');
@@ -20,9 +16,10 @@ const express = require('./server');
 const { initI18n } = require('./i18n/_server');
 const { getLogPrefix } = require('./helpers/log');
 const { redirectToChunkMiddleware } = require('./middlewares/redirectToChunk');
+const { createDevServer } = require('./helpers/devServer');
 
 function handleFatalError(err) {
-  console.error(chalk.bgRed.white('UNHANDLED ERROR'), err.message);
+  console.log(`${getLogPrefix('error')} Unhandled Error - ${err.message}`);
   console.error(chalk.red(err.stack));
 }
 
@@ -68,10 +65,6 @@ const initApp = ({ appRouter, apiRouter, i18n }) => {
 
   app.use(LogRoute);
 
-  const options = {
-    key: fs.readFileSync(resolve(__dirname, './config/cert/my_cert.key')),
-    cert: fs.readFileSync(resolve(__dirname, './config/cert/my_cert.crt')),
-  };
   app.get(`${basePath}/ping`, (_, res) => res.send('pong'));
   app.use(
     `${basePath}/static`,
@@ -89,7 +82,7 @@ const initApp = ({ appRouter, apiRouter, i18n }) => {
     app.use(`${basePath}/api`, apiRouter);
   }
 
-  const server = https.createServer(options, app);
+  const server = env === 'development' ? createDevServer(app) : app;
 
   server.listen(port, () => {
     console.log(
