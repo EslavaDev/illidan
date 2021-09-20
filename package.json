@@ -1,8 +1,21 @@
 {
-  "name": "@conekta/ssr",
+  "name": "@conekta/cronos",
   "version": "0.1.0",
-  "description": "",
+  "description": "Library to build server apps using react as live template",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/conekta/common-cronos-frontend.git"
+  },
+  "keywords": [
+    "mockserver"
+  ],
+  "author": "Conekta",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/conekta/common-cronos-frontend/issues"
+  },
+  "homepage": "https://github.com/conekta/common-cronos-frontend#readme",
   "scripts": {
     "lint": "eslint --fix {**/*,*}.{js,ts,jsx,tsx,html}"
   },
@@ -67,9 +80,6 @@
     "webpack-merge": "^5.8.0",
     "yargs": "^17.1.1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
