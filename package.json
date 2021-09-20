@@ -1,6 +1,6 @@
 {
   "name": "@conekta/cronos",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Library to build server apps using react as live template",
   "main": "index.js",
   "repository": {
@@ -8,7 +8,8 @@
     "url": "git+https://github.com/conekta/common-cronos-frontend.git"
   },
   "keywords": [
-    "mockserver"
+    "ssr",
+    "react"
   ],
   "author": "Conekta",
   "license": "MIT",
@@ -20,7 +21,7 @@
     "lint": "eslint --fix {**/*,*}.{js,ts,jsx,tsx,html}"
   },
   "bin": {
-    "conekta-scripts": "./bin/index.js"
+    "cronos": "./bin/index.js"
   },
   "dependencies": {
     "@babel/cli": "^7.15.7",

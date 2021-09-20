@@ -14,7 +14,7 @@ module.exports = (env, { mode }) =>
       path: path.resolve(root, 'public'),
     },
     // eslint-disable-next-line import/no-dynamic-require
-    entry: require(path.resolve(root, 'conekta.entries.json')),
+    entry: require(path.resolve(root, 'cronos.config.js')).clientEntry,
     plugins: [
       new webpack.DefinePlugin({
         'process.env.IS_BROWSER': process.env.IS_BROWSER,

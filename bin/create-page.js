@@ -26,7 +26,7 @@ async function run({ page: name }) {
   await fse.outputFile(
     view,
     `import { FC } from 'react';
-import { Page } from '@conekta/ssr/declarative';
+import { Page } from '@conekta/cronos/declarative';
 
 export const ${ComponentName}: FC<{ state: any }> = ({ state }) => {
   return (
@@ -42,7 +42,7 @@ export const ${ComponentName}: FC<{ state: any }> = ({ state }) => {
   await fse.outputFile(
     controller,
     `import { FC } from 'react';
-import { Request, Response } from '@conekta/ssr/server';
+import { Request, Response } from '@conekta/cronos/server';
 import { ${ComponentName} } from 'app/pages/${name}/view';
 
 export const render = (req: Request, res: Response) => {
@@ -63,8 +63,8 @@ export const render = (req: Request, res: Response) => {
   console.log('Created controller at: ', view);
   await fse.outputFile(
     index,
-    `import { Router } from '@conekta/ssr/server';
-import { isAuthorized } from '@conekta/ssr/middlewares';
+    `import { Router } from '@conekta/cronos/server';
+import { isAuthorized } from '@conekta/cronos/middlewares';
 import { render } from './controller';
 
 const router = Router();
@@ -83,7 +83,7 @@ export default router;
 
   await fse.outputFile(
     client,
-    `import { hydrate } from '@conekta/ssr/client';
+    `import { hydrate } from '@conekta/cronos/client';
 import { ${ComponentName} } from 'app/pages/${name}/view';
 
 hydrate((state) => <${ComponentName} state={state} />);
@@ -92,16 +92,21 @@ hydrate((state) => <${ComponentName} state={state} />);
   );
   console.log('Created client hydrate at: ', client);
 
-  const entriesPath = path.resolve(root, 'webpack.entries.json');
+  const cronosConfigPath = path.resolve(root, 'cronos.config.js');
 
-  const entries = await fse.readJson(entriesPath);
-  entries[name] = [
+  // eslint-disable-next-line import/no-dynamic-require
+  const cronosConfig = require(cronosConfigPath);
+  cronosConfig.clientEntry[name] = [
     `./src/app/client/${name}.tsx`,
     `./src/app/pages/${name}/${name}.scss`,
   ];
-  await fse.outputFile(entriesPath, JSON.stringify(entries, null, 2), 'utf8');
+  await fse.outputFile(
+    cronosConfigPath,
+    JSON.stringify(cronosConfig.clientEntry, null, 2),
+    'utf8',
+  );
 
-  console.log('added entries hydrate at: ', entriesPath);
+  console.log('added entries hydrate at: ', cronosConfigPath);
 }
 
 module.exports = run;
