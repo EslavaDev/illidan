@@ -20,7 +20,7 @@ module.exports = (env, { mode }) =>
         'process.env.IS_BROWSER': process.env.IS_BROWSER,
       }),
       new Dotenv({
-        path: `${root}/.env.${mode}`,
+        path: `${root}/.env.${process.env.NODE_ENV}`,
         allowEmptyValues: true,
       }),
       new LoadablePlugin(),

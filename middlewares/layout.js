@@ -93,8 +93,8 @@ function renderHydrate({ i18n, clientName, basePath, Component, title }) {
     <script>(function(){window.__I18N__ = ${
       i18nClient ? serialize(i18nClient) : null
     }}).apply(window)</script>
-    ${loadableScriptTags}
     ${helmetTags.script.toString()}
+    ${loadableScriptTags}
 </body>
 </html>`;
 }

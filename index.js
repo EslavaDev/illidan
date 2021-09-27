@@ -23,6 +23,9 @@ function handleFatalError(err) {
   console.error(chalk.red(err.stack));
 }
 
+// eslint-disable-next-line import/no-dynamic-require
+const cronosConfig = require(path.resolve(process.cwd(), 'cronos.config'));
+
 process.on('uncaughtException', handleFatalError);
 process.on('unhandledRejection', handleFatalError);
 
@@ -38,16 +41,33 @@ const initApp = ({ appRouter, apiRouter, i18n }) => {
 
   const app = express();
 
+  const { extendCSP } = cronosConfig;
+  let connectSrc = [];
+  if (extendCSP && Array.isArray(extendCSP.connectSrc)) {
+    connectSrc = extendCSP.connectSrc;
+  }
+
   app.use(
     helmet({
       contentSecurityPolicy: {
         directives: {
           ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-          'script-src': ["'self'", "'unsafe-inline'", 'conektame.io'],
-          'connect-src': ["'self'", 'rum-http-intake.logs.datadoghq.com'],
+          'script-src': [
+            "'self'",
+            "'unsafe-inline'",
+            '*.conektame.io',
+            '*.conekta.com',
+          ],
+          'connect-src': [
+            "'self'",
+            'rum-http-intake.logs.datadoghq.com',
+            ...connectSrc,
+          ],
           'img-src': [
             "'self'",
-            'https://s3-conektacdn-staging.s3.amazonaws.com',
+            '*.conektame.io',
+            '*.conekta.com',
+            's3-conektacdn-staging.s3.amazonaws.com',
           ],
         },
       },
