@@ -2,9 +2,13 @@
 const Dotenv = require('dotenv-webpack');
 const { merge } = require('webpack-merge');
 const path = require('path');
+const webpack = require('webpack');
 const LoadablePlugin = require('@loadable/webpack-plugin');
 
 const root = process.cwd();
+
+// eslint-disable-next-line import/no-dynamic-require
+const { version } = require(path.resolve(root, 'package.json'));
 
 module.exports = (env, { mode }) =>
   // eslint-disable-next-line import/no-dynamic-require
@@ -15,6 +19,9 @@ module.exports = (env, { mode }) =>
     // eslint-disable-next-line import/no-dynamic-require
     entry: require(path.resolve(root, 'cronos.config.js')).clientEntry,
     plugins: [
+      new webpack.DefinePlugin({
+        'process.env.VERSION': JSON.stringify(version),
+      }),
       new Dotenv({
         path: `${root}/.env.${process.env.NODE_ENV || 'development'}`,
         systemvars: true,

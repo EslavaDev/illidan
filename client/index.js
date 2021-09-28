@@ -15,7 +15,7 @@ if (process.env.NODE_ENV !== 'development') {
     site: 'datadoghq.com',
     service: process.env.DATADOG_SERVICE,
     // Specify a version number to identify the deployed version of your application in Datadog
-    version: process.env.APP_VERSION,
+    version: process.env.VERSION,
     sampleRate: 100,
     trackInteractions: true,
     // eslint-disable-next-line no-restricted-globals,no-undef

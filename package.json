@@ -1,6 +1,6 @@
 {
   "name": "@conekta/cronos",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "Library to build server apps using react as live template",
   "main": "index.js",
   "repository": {
