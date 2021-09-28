@@ -19,7 +19,7 @@ if (process.env.NODE_ENV !== 'development') {
     sampleRate: 100,
     trackInteractions: true,
     // eslint-disable-next-line no-restricted-globals,no-undef
-    env: location.pathname,
+    env: process.env.NODE_ENV,
   });
 }
 
