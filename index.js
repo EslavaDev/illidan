@@ -5,8 +5,6 @@ require('dotenv').config({
   path: path.resolve(process.cwd(), `.env.${env}`),
 });
 const { resolve } = require('path');
-
-const helmet = require('helmet');
 const { handle } = require('i18next-http-middleware');
 const i18next = require('i18next');
 const chalk = require('chalk');
@@ -17,14 +15,12 @@ const { initI18n } = require('./i18n/_server');
 const { getLogPrefix } = require('./helpers/log');
 const { redirectToChunkMiddleware } = require('./middlewares/redirectToChunk');
 const { createDevServer } = require('./helpers/devServer');
+const { extendCspHeaders } = require('./helpers/cspHeaders');
 
 function handleFatalError(err) {
   console.log(`${getLogPrefix('error')} Unhandled Error - ${err.message}`);
   console.error(chalk.red(err.stack));
 }
-
-// eslint-disable-next-line import/no-dynamic-require
-const cronosConfig = require(path.resolve(process.cwd(), 'cronos.config'));
 
 process.on('uncaughtException', handleFatalError);
 process.on('unhandledRejection', handleFatalError);
@@ -41,34 +37,7 @@ const initApp = ({ appRouter, apiRouter, i18n }) => {
 
   const app = express();
 
-  const { extendCSP } = cronosConfig;
-  let connectSrc = [];
-  if (extendCSP && Array.isArray(extendCSP.connectSrc)) {
-    connectSrc = extendCSP.connectSrc;
-  }
-
-  app.use(
-    helmet({
-      contentSecurityPolicy: {
-        directives: {
-          ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-          'script-src': [
-            "'self'",
-            "'unsafe-inline'",
-            '*.conektame.io',
-            '*.conekta.com',
-          ],
-          'connect-src': [
-            "'self'",
-            'rum-http-intake.logs.datadoghq.com',
-            ...connectSrc,
-          ],
-          'img-src': ["'self'", '*'],
-          'frame-ancestors': ["'self'", '*'],
-        },
-      },
-    }),
-  );
+  app.use(extendCspHeaders());
   app.use(
     express.urlencoded({
       extended: true,
