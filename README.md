@@ -71,6 +71,6 @@ cronos server-dev ./src/index.js --watch
 Remember to reference the scope in the **NODE_ENV** var.
 
 ```bash
-cronos server-build # Only if you're using Typescript
-node -r @conekta/cronos/register ./lib/index.js
+cronos server-build # Only if you're using Typescript or JSX
+node -r @conekta/cronos/register ./lib/index.js # Or ./src/index.js if your using vanilla JS
 ```
