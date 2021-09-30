@@ -1,9 +1,4 @@
-const env = process.env.NODE_ENV || 'development';
-
-const path = require('path');
-require('dotenv').config({
-  path: path.resolve(process.cwd(), `.env.${env}`),
-});
+require('./env');
 const { resolve } = require('path');
 const { handle } = require('i18next-http-middleware');
 const i18next = require('i18next');
