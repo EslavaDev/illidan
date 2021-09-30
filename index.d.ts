@@ -7,7 +7,7 @@ interface I18nArgs {
 }
 
 interface Args {
-    enableOidcRoutes?: boolean;
+    onlyServer?: boolean;
     appRouter?: Router;
     apiRouter?: Router;
     i18n?: I18nArgs;

@@ -20,7 +20,7 @@ function safeParseJson(string) {
 }
 
 function getMockPath(req) {
-  const env = process.env.NODE_ENV;
+  const env = process.env.NODE_ENV || 'development';
   const { method } = req;
   const { protocol, host, pathname } = req.url;
   const sanitizedProtocol = protocol.replace(':', '');

@@ -9,11 +9,9 @@ const { handle } = require('i18next-http-middleware');
 const i18next = require('i18next');
 const chalk = require('chalk');
 const { LogRoute } = require('./middlewares/logRoute');
-const { layoutMiddleware } = require('./middlewares/layout');
 const express = require('./server');
 const { initI18n } = require('./i18n/_server');
 const { getLogPrefix } = require('./helpers/log');
-const { redirectToChunkMiddleware } = require('./middlewares/redirectToChunk');
 const { createDevServer } = require('./helpers/devServer');
 const { extendCspHeaders } = require('./helpers/cspHeaders');
 
@@ -25,7 +23,7 @@ function handleFatalError(err) {
 process.on('uncaughtException', handleFatalError);
 process.on('unhandledRejection', handleFatalError);
 
-const initApp = ({ appRouter, apiRouter, i18n }) => {
+const initApp = ({ appRouter, apiRouter, i18n, onlyServer }) => {
   const basePath = process.env.APP_BASE_PATH || '';
   const port = process.env.NODE_PORT;
   if (!port) {
@@ -55,13 +53,26 @@ const initApp = ({ appRouter, apiRouter, i18n }) => {
     `${basePath}/static`,
     express.static(resolve(`${process.cwd()}/public`)),
   );
-  app.use(redirectToChunkMiddleware(basePath));
+  if (!onlyServer) {
+    const {
+      redirectToChunkMiddleware,
+    } = require('./middlewares/redirectToChunk');
+    app.use(redirectToChunkMiddleware(basePath));
+  }
   if (i18n) {
     initI18n(i18n);
     app.use(handle(i18next));
   }
   if (appRouter) {
-    app.use(basePath, layoutMiddleware(basePath), appRouter);
+    if (!onlyServer) {
+      app.use(
+        basePath,
+        require('./middlewares/layout').layoutMiddleware(basePath),
+        appRouter,
+      );
+    } else {
+      app.use(basePath, appRouter);
+    }
   }
   if (apiRouter) {
     app.use(`${basePath}/api`, apiRouter);
