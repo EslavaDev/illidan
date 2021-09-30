@@ -27,7 +27,7 @@ Configure the env variables for every scope in the root of your project.
 Create your first router.
 ```jsx
 // src/app/server.js
-import { Router } from '@conekta/cronos/server';
+const { Router } = require('@conekta/cronos/server');
 
 const router = Router();
 
@@ -41,17 +41,17 @@ router.get('/foo', (req, res) => {
     res.send({ foo: 'bar' })
 })
 
-export default router;
+module.exports = router;
 
 ```
 Init the app with your router.
 ```js
 // src/index.js
-import initApp from '@conekta/cronos';
-import initMocks from '@conekta/cronos/mocks';
-import App from 'app/server'
+const initApp = require('@conekta/cronos');
+const initMocks = require('@conekta/cronos/mocks');
+const App = require('app/server')
 
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV === 'development') {
     initMocks('https://panelb.conektame.io/*');
 }
 
@@ -71,6 +71,6 @@ cronos server-dev ./src/index.js --watch
 Remember to reference the scope in the **NODE_ENV** var.
 
 ```bash
-cronos server-build
+cronos server-build # Only if you're using Typescript
 node -r @conekta/cronos/register ./lib/index.js
 ```
