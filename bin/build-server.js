@@ -57,7 +57,7 @@ function runServerDev({ entry, watch }) {
   if (watch) {
     const nodemonConfig = {
       watch: 'src/**/*',
-      ext: 'ts,tsx,json',
+      ext: 'js,jsx,ts,tsx,json',
       ignore: 'src/**/*.spec.ts,src/**/*.test.ts',
       execMap: {
         ts: babelNodeArgs.join(' '),
