@@ -1,10 +1,26 @@
 // eslint-disable-next-line node/no-unpublished-require
+const fse = require('fs-extra');
 const { getStatsFilePath } = require('../helpers/statsFile');
+const { getLogPrefix } = require('../helpers/log');
 
 function redirectToAssetMiddleware() {
-  // eslint-disable-next-line import/no-dynamic-require
-  const statsFile = require(getStatsFilePath());
+  const file = getStatsFilePath();
+  let statsFile = null;
+  if (fse.exists(file)) {
+    // eslint-disable-next-line import/no-dynamic-require
+    statsFile = require(file);
+  } else {
+    console.log(
+      `${getLogPrefix(
+        'warn',
+      )} Cannot find client stats file, chunkMiddleware will be disabled`,
+    );
+  }
   return function (req, res, next) {
+    if (!statsFile) {
+      next();
+      return;
+    }
     res.sendJsAsset = (chunkName) => {
       if (!statsFile.assetsByChunkName[chunkName]) {
         next(Error('Related Asset Not found'));
