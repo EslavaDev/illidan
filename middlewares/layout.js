@@ -12,10 +12,11 @@ const { Helmet: ReactHelmet } = require('react-helmet');
 const { getStatsFilePath } = require('../helpers/statsFile');
 
 function SSRComponent({ children, i18n }) {
-  return createElement(i18n ? I18nextProvider : Fragment, {
-    i18n: i18n || null,
-    children,
-  });
+  const props = {};
+  if (i18n) {
+    props.i18n = i18n;
+  }
+  return createElement(i18n ? I18nextProvider : Fragment, props, children);
 }
 
 function getChunkExtractor({ statsPath, clientName, basePath }) {
