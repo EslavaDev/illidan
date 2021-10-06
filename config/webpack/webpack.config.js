@@ -32,8 +32,7 @@ module.exports = (env, { mode }) =>
       new CopyPlugin({
         patterns: [
           {
-            from: 'assets/*',
-            to: 'assets/[name][ext]',
+            from: 'assets/**/*',
             noErrorOnMissing: true,
           },
         ],
