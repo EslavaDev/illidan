@@ -19,7 +19,7 @@ function handleFatalError(err) {
 process.on('uncaughtException', handleFatalError);
 process.on('unhandledRejection', handleFatalError);
 
-const initApp = ({ appRouter, apiRouter, i18n, onlyServer }) => {
+const initApp = async ({ appRouter, apiRouter, i18n, onlyServer }) => {
   const basePath = process.env.APP_BASE_PATH || '';
   const port = process.env.NODE_PORT;
   if (!port) {
@@ -53,7 +53,7 @@ const initApp = ({ appRouter, apiRouter, i18n, onlyServer }) => {
     const {
       redirectToChunkMiddleware,
     } = require('./middlewares/redirectToChunk');
-    app.use(redirectToChunkMiddleware(basePath));
+    app.use(await redirectToChunkMiddleware(basePath));
   }
   if (i18n) {
     initI18n(i18n);
@@ -83,4 +83,6 @@ const initApp = ({ appRouter, apiRouter, i18n, onlyServer }) => {
   });
 };
 
-module.exports = initApp;
+module.exports = (config) => {
+  initApp(config);
+};

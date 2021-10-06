@@ -3,10 +3,10 @@ const fse = require('fs-extra');
 const { getStatsFilePath } = require('../helpers/statsFile');
 const { getLogPrefix } = require('../helpers/log');
 
-function redirectToAssetMiddleware() {
+async function redirectToAssetMiddleware() {
   const file = getStatsFilePath();
   let statsFile = null;
-  if (fse.exists(file)) {
+  if (await fse.exists(file)) {
     // eslint-disable-next-line import/no-dynamic-require
     statsFile = require(file);
   } else {
