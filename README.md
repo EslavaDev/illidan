@@ -1,6 +1,8 @@
-# Cronos
-
-Node.js library to build server apps using react as live template **(Server Side Rendering)**
+<h1 align="center">Cronos</h1>
+<p align="center">Node.js library to build server apps using react as live template (Server Side Rendering)</p>
+<p align="center">
+  <img height="50%" width="50%" src="https://user-images.githubusercontent.com/84805443/135535849-ffc10216-bbc6-4904-b52e-16662200a702.png" />
+</p>
 
 ## Before install
 
@@ -71,6 +73,6 @@ cronos server-dev ./src/index.js --watch
 Remember to reference the scope in the **NODE_ENV** var.
 
 ```bash
-cronos server-build # Only if you're using Typescript
-node -r @conekta/cronos/register ./lib/index.js
+cronos server-build # Only if you're using Typescript or JSX
+node -r @conekta/cronos/register ./lib/index.js # Or ./src/index.js if your using vanilla JS
 ```
