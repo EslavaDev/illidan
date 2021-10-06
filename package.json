@@ -1,6 +1,6 @@
 {
   "name": "@conekta/cronos",
-  "version": "0.2.3",
+  "version": "0.2.5",
   "description": "Library to build server apps using react as live template",
   "main": "index.js",
   "repository": {
@@ -52,6 +52,7 @@
     "body-parser": "^1.18.2",
     "chalk": "^4.1.2",
     "clean-webpack-plugin": "^4.0.0",
+    "copy-webpack-plugin": "^9.0.1",
     "css-loader": "^6.3.0",
     "dotenv": "^10.0.0",
     "dotenv-webpack": "^7.0.3",

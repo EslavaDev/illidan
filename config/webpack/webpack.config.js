@@ -4,6 +4,7 @@ const { merge } = require('webpack-merge');
 const path = require('path');
 const webpack = require('webpack');
 const LoadablePlugin = require('@loadable/webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 const root = process.cwd();
 
@@ -28,5 +29,14 @@ module.exports = (env, { mode }) =>
         allowEmptyValues: true,
       }),
       new LoadablePlugin(),
+      new CopyPlugin({
+        patterns: [
+          {
+            from: 'assets/*',
+            to: 'assets/[name][ext]',
+            noErrorOnMissing: true,
+          },
+        ],
+      }),
     ],
   });
