@@ -61,6 +61,7 @@ function runServerDev({ entry, watch }) {
       ignore: 'src/**/*.spec.ts,src/**/*.test.ts',
       execMap: {
         ts: babelNodeArgs.join(' '),
+        js: babelNodeArgs.join(' '),
       },
       script: entry,
     };
