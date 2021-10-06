@@ -27,7 +27,7 @@ module.exports = {
         test: /\.(png|svg|jpg|gif|woff|woff2|eot|ttf|otf)$/,
         loader: 'url-loader',
         options: {
-          name: 'static/media/[name].[hash:8].[ext]',
+          name: 'media/[name].[hash:8].[ext]',
         },
       },
       {
