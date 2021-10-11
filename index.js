@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/order
 const env = require('./env');
+require('./datadog')();
 const { resolve } = require('path');
 const { handle } = require('i18next-http-middleware');
 const i18next = require('i18next');
@@ -7,13 +8,13 @@ const chalk = require('chalk');
 const { LogRoute } = require('./middlewares/logRoute');
 const express = require('./server');
 const { initI18n } = require('./i18n/_server');
-const { getLogPrefix } = require('./helpers/log');
 const { createDevServer } = require('./helpers/devServer');
 const { extendCspHeaders } = require('./helpers/cspHeaders');
+const logger = require('./logger');
 
 function handleFatalError(err) {
-  console.log(`${getLogPrefix('error')} Unhandled Error - ${err.message}`);
-  console.error(chalk.red(err.stack));
+  logger.error(`Unhandled Error - ${err.message}`);
+  logger.error(chalk.red(err.stack));
 }
 
 process.on('uncaughtException', handleFatalError);
@@ -42,7 +43,9 @@ const initApp = async ({ appRouter, apiRouter, i18n, onlyServer }) => {
 
   app.set('trust proxy', 1);
 
-  app.use(LogRoute);
+  if (process.env.NODE_ENV === 'development') {
+    app.use(LogRoute);
+  }
 
   app.get(`${basePath}/ping`, (_, res) => res.send('pong'));
   app.use(
@@ -77,9 +80,7 @@ const initApp = async ({ appRouter, apiRouter, i18n, onlyServer }) => {
   const server = env === 'development' ? createDevServer(app) : app;
 
   server.listen(port, () => {
-    console.log(
-      `${getLogPrefix('info')} Listening on port ${chalk.greenBright(port)}`,
-    );
+    logger.info(`Listening on port ${chalk.greenBright(port)}`);
   });
 };
 

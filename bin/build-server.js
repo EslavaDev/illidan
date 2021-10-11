@@ -1,6 +1,7 @@
 const { spawn, exec } = require('child_process');
 const { promisify } = require('util');
 const nodemon = require('nodemon');
+const logger = require('../logger');
 const { getLogPrefix } = require('../helpers/log');
 
 const execPromise = promisify(exec);
@@ -41,7 +42,7 @@ async function buildServerLib() {
 
 function runServerDev({ entry, watch }) {
   const logPrefixInfo = getLogPrefix('info');
-  console.log(`${logPrefixInfo} Dev server started`);
+  logger.info(`${logPrefixInfo} Dev server started`);
   const babelRuntime = require.resolve('../config/babel/babel.server');
   const babelNodeArgs = ['babel-node', '-r', babelRuntime];
   const spawnConfig = {
@@ -66,22 +67,22 @@ function runServerDev({ entry, watch }) {
       script: entry,
     };
     nodemon.on('boot', () => {
-      console.log(`${logPrefixInfo} Watching file changes`);
-      console.log(
+      logger.info(`${logPrefixInfo} Watching file changes`);
+      logger.info(
         `${logPrefixInfo} You can type 'rs' in the terminal to restart the service manually`,
       );
     });
     nodemon(nodemonConfig);
     nodemon.on('restart', () => {
-      console.log(`${logPrefixInfo} Restarting dev server due to file changes`);
+      logger.info(`${logPrefixInfo} Restarting dev server due to file changes`);
     });
     nodemon.on('crash', () => {
-      console.log(`${getLogPrefix('error')} Script crashed for some reason`);
+      logger.info(`${getLogPrefix('error')} Script crashed for some reason`);
     });
 
     nodemon.on('error', (err) => {
-      console.log('An error occurred');
-      console.log(err);
+      logger.info('An error occurred');
+      logger.info(err);
     });
     return;
   }

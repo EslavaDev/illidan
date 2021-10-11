@@ -10,10 +10,10 @@ import { datadogRum } from '@datadog/browser-rum';
 
 if (process.env.NODE_ENV !== 'development') {
   datadogRum.init({
-    applicationId: process.env.DATADOG_APP_ID,
-    clientToken: process.env.DATADOG_CLIENT_TOKEN,
+    applicationId: process.env.DD_RUM_APP_ID,
+    clientToken: process.env.DD_RUM_CLIENT_TOKEN,
     site: 'datadoghq.com',
-    service: process.env.DATADOG_SERVICE,
+    service: process.env.DD_SERVICE,
     // Specify a version number to identify the deployed version of your application in Datadog
     version: process.env.VERSION,
     sampleRate: 100,

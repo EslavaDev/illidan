@@ -1,6 +1,6 @@
 {
   "name": "@conekta/cronos",
-  "version": "0.2.6",
+  "version": "0.2.13",
   "description": "Library to build server apps using react as live template",
   "main": "index.js",
   "repository": {
@@ -54,6 +54,7 @@
     "clean-webpack-plugin": "^4.0.0",
     "copy-webpack-plugin": "^9.0.1",
     "css-loader": "^6.3.0",
+    "dd-trace": "^1.5.0",
     "dotenv": "^10.0.0",
     "dotenv-webpack": "^7.0.3",
     "express": "^4.16.3",
@@ -83,6 +84,7 @@
     "webpack-bundle-analyzer": "^4.4.2",
     "webpack-cli": "^4.8.0",
     "webpack-merge": "^5.8.0",
+    "winston": "^3.3.3",
     "yargs": "^17.2.1"
   },
   "devDependencies": {

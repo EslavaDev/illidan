@@ -1,6 +1,6 @@
 const chalk = require('chalk');
 
-const cliName = '[conekta-scripts]';
+const cliName = '[cronos-cli]';
 
 const variants = {
   info: chalk.blueBright('i'),
@@ -12,4 +12,4 @@ const variants = {
 const getLogPrefix = (variant) =>
   `${variants[variant]} ${chalk.gray(cliName)} :`;
 
-module.exports = { getLogPrefix };
+module.exports = { getLogPrefix, variants };
