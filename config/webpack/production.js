@@ -30,6 +30,7 @@ module.exports = merge(commonConfig, {
   plugins: [
     new MiniCssExtractPlugin({
       filename: '[name].[chunkhash:8].css',
+      ignoreOrder: true,
     }),
     // new BundleAnalyzerPlugin(),
   ],

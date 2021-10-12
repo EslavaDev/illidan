@@ -19,6 +19,7 @@ module.exports = merge(commonConfig, {
   plugins: [
     new MiniCssExtractPlugin({
       filename: '[name].css',
+      ignoreOrder: true,
     }),
     new webpack.SourceMapDevToolPlugin({
       filename: '[file].map',
