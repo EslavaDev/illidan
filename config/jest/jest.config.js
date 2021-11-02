@@ -3,6 +3,10 @@ const path = require('path');
 const rootDir = process.cwd();
 
 const sharedConfig = {
+  coveragePathIgnorePatterns: [
+    '<rootDir>/node_modules/',
+    '(/__tests__/.*|(\\\\.|/)(test|spec))\\\\.[jt]sx?$',
+  ],
   rootDir,
   resetMocks: true,
   transform: {

@@ -20,13 +20,33 @@ yargs(process.argv.slice(2))
     AVAILABLE_COMMANDS.TESTS,
     'Run unit test',
     (command) =>
-      command.option('e', {
-        alias: 'env',
-        demandOption: false,
-        describe: 'Environment for test runner',
-        type: 'string',
-        choices: ['server', 'client', 'universal'],
-      }),
+      command
+        .option('e', {
+          alias: 'env',
+          demandOption: false,
+          describe: 'Environment for test runner',
+          type: 'string',
+          choices: ['server', 'client', 'universal'],
+        })
+        .option('c', {
+          alias: 'coverage',
+          demandOption: false,
+          describe: 'Collect coverage',
+          type: 'boolean',
+        })
+        .option('s', {
+          alias: 'silent',
+          demandOption: false,
+          describe: 'Prevent tests from printing messages through the console',
+          type: 'boolean',
+        })
+        .option('w', {
+          alias: 'watch',
+          demandOption: false,
+          describe:
+            'Watch files for changes and rerun tests related to changed files. If you want to re-run all tests when a file has changed, use the `--watchAll` option.',
+          type: 'boolean',
+        }),
     runTests,
   )
   .command(
