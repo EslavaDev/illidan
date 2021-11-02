@@ -3,17 +3,32 @@ const yargs = require('yargs');
 const createPageScript = require('./create-page');
 const { buildWebpackClient, buildWebpackDev } = require('./build-client');
 const { buildServerLib, runServerDev } = require('./build-server');
+const { runTests } = require('./run-test');
 
 const AVAILABLE_COMMANDS = {
   CLIENT_BUILD: 'client-build',
   CLIENT_DEV: 'client-dev',
   SERVER_BUILD: 'server-build',
+  TESTS: 'test',
   SERVER_DEV: 'server-dev <entry>',
   CREATE_PAGE: 'create-page',
 };
 
 yargs(process.argv.slice(2))
   .usage('Usage: $0 <command> [options]')
+  .command(
+    AVAILABLE_COMMANDS.TESTS,
+    'Run unit test',
+    (command) =>
+      command.option('e', {
+        alias: 'env',
+        demandOption: false,
+        describe: 'Environment for test runner',
+        type: 'string',
+        choices: ['server', 'client', 'universal'],
+      }),
+    runTests,
+  )
   .command(
     AVAILABLE_COMMANDS.CLIENT_BUILD,
     'Build client assets for production',

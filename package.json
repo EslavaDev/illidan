@@ -1,6 +1,6 @@
 {
   "name": "@conekta/cronos",
-  "version": "0.2.14",
+  "version": "0.3.0",
   "description": "Library to build server apps using react as live template",
   "main": "index.js",
   "repository": {
@@ -48,6 +48,7 @@
     "@types/react-side-effect": "^1.1.1",
     "babel-loader": "^8.2.2",
     "babel-plugin-module-resolver": "^4.1.0",
+    "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "babel-plugin-transform-require-ignore": "^0.1.1",
     "body-parser": "^1.18.2",
     "chalk": "^4.1.2",

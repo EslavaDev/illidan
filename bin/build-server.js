@@ -25,7 +25,7 @@ async function buildServerLib() {
     '--out-dir',
     './lib',
     '--ignore',
-    '**/*.test.*,**/*.spec.*,**/client/**,**/*.d.ts',
+    '**/*.test.ts,**/*.test.tsx,**/*.test.js,**/*.test.jsx,**/*.spec.ts,**/*.spec.tsx,**/*.spec.js,**/*.spec.jsx,**/client/**,**/*.d.ts',
     '--source-maps',
   ];
   spawn(/^win/.test(process.platform) ? 'npx.cmd' : 'npx', babelArgs, {
@@ -59,7 +59,6 @@ function runServerDev({ entry, watch }) {
     const nodemonConfig = {
       watch: 'src/**/*',
       ext: 'js,jsx,ts,tsx,json',
-      ignore: 'src/**/*.spec.ts,src/**/*.test.ts',
       execMap: {
         ts: babelNodeArgs.join(' '),
         js: babelNodeArgs.join(' '),

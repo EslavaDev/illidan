@@ -1,4 +1,5 @@
 module.exports = {
+  extends: require.resolve('./babel.conf.common'),
   presets: [
     [
       '@babel/preset-env',
@@ -9,14 +10,6 @@ module.exports = {
         modules: 'auto',
       },
     ],
-    [
-      '@babel/preset-react',
-      {
-        runtime: 'automatic',
-      },
-    ],
-    ['@babel/preset-typescript'],
-    '@babel/preset-flow',
   ],
   plugins: [
     [
@@ -25,17 +18,6 @@ module.exports = {
         extensions: ['.less', '.sass', '.css', '.scss'],
       },
     ],
-    [
-      'module-resolver',
-      {
-        alias: {
-          api: `./src/api`,
-          app: `./src/app`,
-          common: `./src/common`,
-        },
-      },
-    ],
-    '@loadable/babel-plugin',
   ],
   sourceMaps: true,
 };
