@@ -5,33 +5,39 @@ const execPromise = promisify(exec);
 
 const webpackConfigPath = require.resolve('../config/webpack/webpack.config');
 
-function buildWebpack({ watch, mode }) {
-  const webpackArgs = [
-    'webpack',
-    `--config=${webpackConfigPath}`,
-    `--mode=${mode}`,
-  ];
-  webpackArgs.push(...(watch ? ['--watch'] : []));
+function buildWebpack({ watch, mode, serve }) {
+  const webpackArgs = ['webpack'];
+  const env = {
+    IS_BROWSER: true,
+    PATH: process.env.PATH,
+    ...process.env,
+    NODE_ENV: process.env.NODE_ENV || 'development',
+  };
+  if (serve) {
+    webpackArgs.push('serve');
+    env.CRONOS_SERVE_SPA = true;
+  }
+  if (watch) {
+    webpackArgs.push('--watch');
+  }
+  webpackArgs.push(...[`--config=${webpackConfigPath}`, `--mode=${mode}`]);
   spawn(/^win/.test(process.platform) ? 'npx.cmd' : 'npx', webpackArgs, {
-    env: {
-      IS_BROWSER: true,
-      PATH: process.env.PATH,
-      ...process.env,
-      NODE_ENV: process.env.NODE_ENV || 'development',
-    },
+    env,
     cwd: process.cwd(),
     stdio: 'inherit',
   });
 }
 
-function buildWebpackDev({ watch }) {
-  buildWebpack({ mode: 'development', watch });
+function serveWebpackDev({ mode }) {
+  buildWebpack({ mode, serve: true });
 }
-async function buildWebpackClient() {
-  await execPromise(
-    `${/^win/.test(process.platform) ? 'npx.cmd' : 'npx'} rimraf public`,
-  );
-  buildWebpack({ mode: 'production' });
+async function buildWebpackClient({ watch, mode }) {
+  if (mode === 'production') {
+    await execPromise(
+      `${/^win/.test(process.platform) ? 'npx.cmd' : 'npx'} rimraf public`,
+    );
+  }
+  buildWebpack({ mode, watch });
 }
 
-module.exports = { buildWebpackDev, buildWebpackClient };
+module.exports = { serveWebpackDev, buildWebpackClient };

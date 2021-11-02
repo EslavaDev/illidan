@@ -35,7 +35,10 @@ const getModuleResolver = () => {
     }
 
     if (realPath.endsWith('/*')) {
-      realPath = './'.concat(realPath.slice(0, -2));
+      realPath = baseUrl.concat(
+        !baseUrl.endsWith('/') ? '/' : '',
+        realPath.slice(0, -2),
+      );
     }
 
     mappedPaths[pathAlias] = realPath;
@@ -46,14 +49,13 @@ const getModuleResolver = () => {
   return [
     'module-resolver',
     {
-      root: [baseUrl],
       extensions,
       alias: mappedPaths,
     },
   ];
 };
 
-const plugins = ['@loadable/babel-plugin'];
+const plugins = [];
 
 const presets = [
   [
@@ -75,6 +77,8 @@ if (moduleResolver) {
 if (process.env.NODE_ENV && process.env.NODE_ENV !== 'development') {
   plugins.push('transform-react-remove-prop-types');
 }
+
+plugins.push('@loadable/babel-plugin');
 
 module.exports = {
   plugins,

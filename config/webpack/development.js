@@ -8,10 +8,24 @@ module.exports = merge(commonConfig, {
   mode: 'development',
   devtool: 'source-map',
   devServer: {
+    historyApiFallback: true,
+    host: 'dev.conektame.io',
     https: true,
-    inline: true,
     port: process.env.PORT || 9090,
-    disableHostCheck: true,
+  },
+  module: {
+    rules: [
+      {
+        test: /\.(s[ac]ss|css)$/,
+        use: [
+          process.env.CRONOS_SERVE_SPA
+            ? 'style-loader'
+            : MiniCssExtractPlugin.loader,
+          'css-loader',
+          'sass-loader',
+        ],
+      },
+    ],
   },
   output: {
     filename: `[name].js`,

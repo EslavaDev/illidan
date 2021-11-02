@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 const yargs = require('yargs');
 const createPageScript = require('./create-page');
-const { buildWebpackClient, buildWebpackDev } = require('./build-client');
+const { buildWebpackClient, serveWebpackDev } = require('./build-client');
 const { buildServerLib, runServerDev } = require('./build-server');
 const { runTests } = require('./run-test');
 
 const AVAILABLE_COMMANDS = {
   CLIENT_BUILD: 'client-build',
-  CLIENT_DEV: 'client-dev',
+  CLIENT_SERVE: 'client-serve',
   SERVER_BUILD: 'server-build',
   TESTS: 'test',
   SERVER_DEV: 'server-dev <entry>',
@@ -31,21 +31,39 @@ yargs(process.argv.slice(2))
   )
   .command(
     AVAILABLE_COMMANDS.CLIENT_BUILD,
-    'Build client assets for production',
-    {},
+    'Build client assets',
+    (command) =>
+      command
+        .option('w', {
+          alias: 'watch',
+          default: false,
+          demandOption: false,
+          describe: 'Watch file changes',
+          type: 'boolean',
+        })
+        .option('m', {
+          alias: 'mode',
+          demandOption: true,
+          describe: 'Compile mode',
+          type: 'string',
+          default: 'development',
+          choices: ['development', 'production'],
+        }),
     buildWebpackClient,
   )
   .command(
-    AVAILABLE_COMMANDS.CLIENT_DEV,
-    'Build client assets for development',
+    AVAILABLE_COMMANDS.CLIENT_SERVE,
+    'Start assets server',
     (command) =>
-      command.option('w', {
-        alias: 'watch',
-        demandOption: false,
-        describe: 'Watch file changes',
-        type: 'boolean',
+      command.option('m', {
+        alias: 'mode',
+        demandOption: true,
+        describe: 'Compile mode',
+        type: 'string',
+        default: 'development',
+        choices: ['development', 'production'],
       }),
-    buildWebpackDev,
+    serveWebpackDev,
   )
   .command(
     AVAILABLE_COMMANDS.SERVER_DEV,

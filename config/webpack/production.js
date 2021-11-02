@@ -9,6 +9,14 @@ module.exports = merge(commonConfig, {
   output: {
     filename: `[name].[chunkhash:8].js`,
   },
+  module: {
+    rules: [
+      {
+        test: /\.(s[ac]ss|css)$/,
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+      },
+    ],
+  },
   /* optimization: {
     splitChunks: {
       chunks: 'async',
