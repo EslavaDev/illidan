@@ -5,7 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 // eslint-disable-next-line import/no-dynamic-require
 const cronosConfig = require(path.resolve(process.cwd(), 'cronos.config'));
 
-const { spa: { htmlTemplate = null } = {} } = cronosConfig;
+const { spa: { htmlTemplate = null, federatedModule = null } = {} } = cronosConfig;
 
 module.exports = {
   optimization: {
@@ -20,7 +20,7 @@ module.exports = {
     },
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
+    extensions: ['.tsx', '.ts', '.js', '.jsx'],
   },
   module: {
     rules: [
@@ -45,12 +45,11 @@ module.exports = {
     new CleanWebpackPlugin({
       verbose: true,
     }),
-    ...(htmlTemplate
-      ? [
-          new HtmlWebpackPlugin({
-            template: path.resolve(process.cwd(), htmlTemplate),
-          }),
-        ]
-      : []),
+    htmlTemplate && 
+      new HtmlWebpackPlugin({
+        template: path.resolve(process.cwd(), htmlTemplate),
+      }),
+    federatedModule && 
+      new ModuleFederationPlugin(federatedModule)
   ],
 };
