@@ -2,10 +2,30 @@
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { ModuleFederationPlugin } = require('webpack').container;
 // eslint-disable-next-line import/no-dynamic-require
 const cronosConfig = require(path.resolve(process.cwd(), 'cronos.config'));
 
-const { spa: { htmlTemplate = null } = {} } = cronosConfig;
+const { spa: { htmlTemplate = null, federatedModule = null } = {} } =
+  cronosConfig;
+
+const webpackPlugins = [
+  new CleanWebpackPlugin({
+    verbose: true,
+  }),
+];
+
+if (htmlTemplate) {
+  webpackPlugins.push(
+    new HtmlWebpackPlugin({
+      template: path.resolve(process.cwd(), htmlTemplate),
+    }),
+  );
+}
+
+if (federatedModule) {
+  webpackPlugins.push(new ModuleFederationPlugin(federatedModule));
+}
 
 module.exports = {
   optimization: {
@@ -20,7 +40,7 @@ module.exports = {
     },
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
+    extensions: ['.tsx', '.ts', '.js', '.jsx'],
   },
   module: {
     rules: [
@@ -41,16 +61,5 @@ module.exports = {
       },
     ],
   },
-  plugins: [
-    new CleanWebpackPlugin({
-      verbose: true,
-    }),
-    ...(htmlTemplate
-      ? [
-          new HtmlWebpackPlugin({
-            template: path.resolve(process.cwd(), htmlTemplate),
-          }),
-        ]
-      : []),
-  ],
+  plugins: webpackPlugins,
 };
