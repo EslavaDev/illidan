@@ -11,7 +11,6 @@ module.exports = merge(commonConfig, {
     historyApiFallback: true,
     host: 'dev.conektame.io',
     https: true,
-    port: process.env.PORT || 9090,
   },
   module: {
     rules: [

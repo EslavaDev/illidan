@@ -5,7 +5,7 @@ const execPromise = promisify(exec);
 
 const webpackConfigPath = require.resolve('../config/webpack/webpack.config');
 
-function buildWebpack({ watch, mode, serve }) {
+function buildWebpack({ watch, mode, serve, port }) {
   const webpackArgs = ['webpack'];
   const env = {
     IS_BROWSER: true,
@@ -14,7 +14,7 @@ function buildWebpack({ watch, mode, serve }) {
     NODE_ENV: process.env.NODE_ENV || 'development',
   };
   if (serve) {
-    webpackArgs.push('serve');
+    webpackArgs.push('serve', '--port', port);
     env.CRONOS_SERVE_SPA = true;
   }
   if (watch) {
@@ -28,8 +28,8 @@ function buildWebpack({ watch, mode, serve }) {
   });
 }
 
-function serveWebpackDev({ mode }) {
-  buildWebpack({ mode, serve: true });
+function serveWebpackDev({ mode, port }) {
+  buildWebpack({ mode, serve: true, port });
 }
 async function buildWebpackClient({ watch, mode }) {
   if (mode === 'production') {

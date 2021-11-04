@@ -75,14 +75,22 @@ yargs(process.argv.slice(2))
     AVAILABLE_COMMANDS.CLIENT_SERVE,
     'Start assets server',
     (command) =>
-      command.option('m', {
-        alias: 'mode',
-        demandOption: true,
-        describe: 'Compile mode',
-        type: 'string',
-        default: 'development',
-        choices: ['development', 'production'],
-      }),
+      command
+        .option('m', {
+          alias: 'mode',
+          demandOption: true,
+          describe: 'Compile mode',
+          type: 'string',
+          default: 'development',
+          choices: ['development', 'production'],
+        })
+        .option('p', {
+          alias: 'port',
+          demandOption: false,
+          describe: 'Port',
+          type: 'number',
+          default: 9090,
+        }),
     serveWebpackDev,
   )
   .command(
