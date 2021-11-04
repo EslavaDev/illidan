@@ -6,7 +6,26 @@ const { ModuleFederationPlugin } = require('webpack').container;
 // eslint-disable-next-line import/no-dynamic-require
 const cronosConfig = require(path.resolve(process.cwd(), 'cronos.config'));
 
-const { spa: { htmlTemplate = null, federatedModule = null } = {} } = cronosConfig;
+const { spa: { htmlTemplate = null, federatedModule = null } = {} } =
+  cronosConfig;
+
+const webpackPlugins = [
+  new CleanWebpackPlugin({
+    verbose: true,
+  }),
+];
+
+if (htmlTemplate) {
+  webpackPlugins.push(
+    new HtmlWebpackPlugin({
+      template: path.resolve(process.cwd(), htmlTemplate),
+    }),
+  );
+}
+
+if (federatedModule) {
+  webpackPlugins.push(new ModuleFederationPlugin(federatedModule));
+}
 
 module.exports = {
   optimization: {
@@ -42,14 +61,5 @@ module.exports = {
       },
     ],
   },
-  plugins: [
-    new CleanWebpackPlugin({
-      verbose: true,
-    }),
-    htmlTemplate &&
-      new HtmlWebpackPlugin({
-        template: path.resolve(process.cwd(), htmlTemplate),
-      }),
-    federatedModule && new ModuleFederationPlugin(federatedModule),
-  ],
+  plugins: webpackPlugins,
 };
