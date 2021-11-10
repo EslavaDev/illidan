@@ -10,16 +10,12 @@ const getModuleResolver = () => {
   // eslint-disable-next-line import/no-dynamic-require
   const jsconfig = require(jsConfigPath);
 
-  if (
-    !jsconfig.compilerOptions ||
-    !jsconfig.compilerOptions.baseUrl ||
-    !jsconfig.compilerOptions.paths
-  ) {
+  if (!jsconfig.compilerOptions || !jsconfig.compilerOptions.baseUrl) {
     return null;
   }
 
   // eslint-disable-next-line prefer-const
-  let { baseUrl, paths } = jsconfig.compilerOptions;
+  let { baseUrl, paths = {} } = jsconfig.compilerOptions;
 
   if (!baseUrl.startsWith('./')) {
     baseUrl = './'.concat(baseUrl);
@@ -49,6 +45,7 @@ const getModuleResolver = () => {
   return [
     'module-resolver',
     {
+      root: [baseUrl],
       extensions,
       alias: mappedPaths,
     },

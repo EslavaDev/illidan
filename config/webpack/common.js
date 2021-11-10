@@ -9,24 +9,6 @@ const cronosConfig = require(path.resolve(process.cwd(), 'cronos.config'));
 const { spa: { htmlTemplate = null, federatedModule = null } = {} } =
   cronosConfig;
 
-const webpackPlugins = [
-  new CleanWebpackPlugin({
-    verbose: true,
-  }),
-];
-
-if (htmlTemplate) {
-  webpackPlugins.push(
-    new HtmlWebpackPlugin({
-      template: path.resolve(process.cwd(), htmlTemplate),
-    }),
-  );
-}
-
-if (federatedModule) {
-  webpackPlugins.push(new ModuleFederationPlugin(federatedModule));
-}
-
 module.exports = {
   optimization: {
     splitChunks: {
@@ -61,5 +43,15 @@ module.exports = {
       },
     ],
   },
-  plugins: webpackPlugins,
+  plugins: [
+    !process.env.CRONOS_SERVE_SPA &&
+      new CleanWebpackPlugin({
+        verbose: true,
+      }),
+    htmlTemplate &&
+      new HtmlWebpackPlugin({
+        template: path.resolve(process.cwd(), htmlTemplate),
+      }),
+    federatedModule && new ModuleFederationPlugin(federatedModule),
+  ].filter(Boolean),
 };

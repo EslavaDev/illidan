@@ -1,3 +1,9 @@
+const plugins = [];
+
+if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+  plugins.push('react-refresh/babel');
+}
+
 module.exports = {
   extends: require.resolve('./babel.conf.common'),
   presets: [
@@ -9,4 +15,5 @@ module.exports = {
       },
     ],
   ],
+  plugins,
 };
