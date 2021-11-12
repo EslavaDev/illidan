@@ -9,6 +9,14 @@ const extendCspHeaders = () => {
   if (extendCSP && Array.isArray(extendCSP.connectSrc)) {
     connectSrc = extendCSP.connectSrc;
   }
+  let scriptSrc = [];
+  if (extendCSP && Array.isArray(extendCSP.scriptSrc)) {
+    scriptSrc = extendCSP.scriptSrc;
+  }
+  let frameSrc = [];
+  if (extendCSP && Array.isArray(extendCSP.frameSrc)) {
+    frameSrc = extendCSP.frameSrc;
+  }
   return helmet({
     contentSecurityPolicy: {
       directives: {
@@ -18,12 +26,14 @@ const extendCspHeaders = () => {
           "'unsafe-inline'",
           '*.conektame.io',
           '*.conekta.com',
+          ...scriptSrc,
         ],
         'connect-src': [
           "'self'",
           'rum-http-intake.logs.datadoghq.com',
           ...connectSrc,
         ],
+        'frame-src': ["'self'", ...frameSrc],
         'img-src': ["'self'", '*'],
       },
     },

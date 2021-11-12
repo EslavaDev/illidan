@@ -62,6 +62,10 @@ const initApp = async ({ appRouter, apiRouter, i18n, onlyServer }) => {
     initI18n(i18n);
     app.use(handle(i18next));
   }
+  if (apiRouter) {
+    app.use(`${basePath}/api`, apiRouter);
+  }
+
   if (appRouter) {
     if (!onlyServer) {
       app.use(
@@ -73,10 +77,6 @@ const initApp = async ({ appRouter, apiRouter, i18n, onlyServer }) => {
       app.use(basePath, appRouter);
     }
   }
-  if (apiRouter) {
-    app.use(`${basePath}/api`, apiRouter);
-  }
-
   const server = env === 'development' ? createDevServer(app) : app;
 
   server.listen(port, () => {
