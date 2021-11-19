@@ -4,19 +4,13 @@ const cronosConfig = require(path.resolve(process.cwd(), 'cronos.config'));
 const helmet = require('helmet');
 
 const extendCspHeaders = () => {
-  const { extendCSP } = cronosConfig;
-  let connectSrc = [];
-  if (extendCSP && Array.isArray(extendCSP.connectSrc)) {
-    connectSrc = extendCSP.connectSrc;
-  }
-  let scriptSrc = [];
-  if (extendCSP && Array.isArray(extendCSP.scriptSrc)) {
-    scriptSrc = extendCSP.scriptSrc;
-  }
-  let frameSrc = [];
-  if (extendCSP && Array.isArray(extendCSP.frameSrc)) {
-    frameSrc = extendCSP.frameSrc;
-  }
+  const { extendCSP } = cronosConfig || { extendCSP: null };
+  const { connectSrc, scriptSrc, frameSrc } = extendCSP || {
+    connectSrc: [],
+    frameSrc: [],
+    scriptSrc: [],
+  };
+
   return helmet({
     contentSecurityPolicy: {
       directives: {

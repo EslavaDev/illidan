@@ -22,10 +22,11 @@ async function redirectToAssetMiddleware() {
       return;
     }
     res.sendJsAsset = (chunkName) => {
-      if (!statsFile.assetsByChunkName[chunkName]) {
+      const chunkFile = statsFile.assetsByChunkName[chunkName];
+      if (!chunkFile) {
         next(Error('Related Asset Not found'));
       }
-      const assetFileName = statsFile.assetsByChunkName[chunkName].find(
+      const assetFileName = chunkFile.find(
         (asset) => asset.endsWith('.js'),
       );
       if (!assetFileName) {
