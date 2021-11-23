@@ -11,6 +11,7 @@ const { initI18n } = require('./i18n/_server');
 const { createDevServer } = require('./helpers/devServer');
 const { extendCspHeaders } = require('./helpers/cspHeaders');
 const logger = require('./logger');
+const { versionApplication } = require('./middlewares/version');
 
 function handleFatalError(err) {
   logger.error(`Unhandled Error - ${err.message}`);
@@ -47,7 +48,9 @@ const initApp = async ({ appRouter, apiRouter, i18n, onlyServer }) => {
     app.use(LogRoute);
   }
 
-  app.get(`${basePath}/ping`, (_, res) => res.send('pong'));
+  app.get(`${basePath}/ping`, versionApplication, (req, res) =>
+    res.json(req.ping),
+  );
   app.use(
     `${basePath}/static`,
     express.static(resolve(`${process.cwd()}/public`)),
