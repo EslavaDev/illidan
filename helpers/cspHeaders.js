@@ -20,11 +20,13 @@ const extendCspHeaders = () => {
           "'unsafe-inline'",
           '*.conektame.io',
           '*.conekta.com',
+          'www.googletagmanager.com',
           ...scriptSrc,
         ],
         'connect-src': [
           "'self'",
           'rum-http-intake.logs.datadoghq.com',
+          'www.google-analytics.com',
           ...connectSrc,
         ],
         'frame-src': ["'self'", ...frameSrc],

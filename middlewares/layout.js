@@ -2,7 +2,6 @@ const { createElement, Fragment } = require('react');
 const { renderToStaticMarkup, renderToString } = require('react-dom/server');
 const { isValidElementType } = require('react-is');
 const { ChunkExtractor } = require('@loadable/server');
-const serialize = require('serialize-javascript');
 const { I18nextProvider } = require('react-i18next');
 
 const { getStatsFilePath } = require('../helpers/statsFile');
@@ -10,6 +9,9 @@ const {
   buildPreLayoutAttributes,
   buildPostLayoutAttributes,
 } = require('../helpers/layout');
+const { buildCommonHtml } = require('../helpers/htmlBuilder');
+
+const analyticID = process.env.GOOGLE_ANALYTICS_ID;
 
 function SSRComponent({ children, i18n }) {
   const props = {};
@@ -59,8 +61,7 @@ function renderHydrate({ i18n, clientName, basePath, Component, title }) {
     buildComponentRenderer({ extractor, sheet, Component, i18n }),
   );
 
-  const { helmetTags, loadableStyleTags, styleTags, loadableScriptTags } =
-    buildPostLayoutAttributes(extractor, sheet);
+  const layoutAttributes = buildPostLayoutAttributes(extractor, sheet);
 
   let i18nClient;
   if (i18n) {
@@ -71,27 +72,16 @@ function renderHydrate({ i18n, clientName, basePath, Component, title }) {
     };
   }
 
-  return `
-<!doctype html>
-<html ${langAttr} ${helmetTags.htmlAttributes}>
-<head>
-    ${getHeadMetaTags({ title })}
-    <title>${title}</title>
-    ${styleTags}
-    ${loadableStyleTags}
-    ${helmetTags.meta}
-    ${helmetTags.link}
-    ${helmetTags.style}
-</head>
-<body ${helmetTags.bodyAttributes}>
-    <div id="app">${app}</div>
-    <script>(function(){window.__I18N__ = ${
-      i18nClient ? serialize(i18nClient) : null
-    }}).apply(window)</script>
-    ${helmetTags.script}
-    ${loadableScriptTags}
-</body>
-</html>`;
+  const titleMetaTag = getHeadMetaTags({ title });
+  return buildCommonHtml({
+    langAttr,
+    app,
+    titleMetaTag,
+    title,
+    analyticID,
+    i18nClient,
+    ...layoutAttributes,
+  });
 }
 
 function renderStatic({ i18n, clientName, basePath, Component, title }) {
@@ -105,26 +95,17 @@ function renderStatic({ i18n, clientName, basePath, Component, title }) {
     buildComponentRenderer({ extractor, sheet, Component, i18n }),
   );
 
-  const { helmetTags, loadableStyleTags, styleTags } =
-    buildPostLayoutAttributes(extractor, sheet);
+  const layoutAttributes = buildPostLayoutAttributes(extractor, sheet);
 
-  return `
-<!doctype html>
-<html ${langAttr} ${helmetTags.htmlAttributes}>
-<head>
-    ${getHeadMetaTags({ title })}
-    <title>${title}</title>
-    ${styleTags}
-    ${loadableStyleTags}
-    ${helmetTags.meta}
-    ${helmetTags.link}
-    ${helmetTags.style}
-</head>
-<body ${helmetTags.bodyAttributes}>
-    <div id="app">${app}</div>
-    ${helmetTags.script}
-</body>
-</html>`;
+  const titleMetaTag = getHeadMetaTags({ title });
+  return buildCommonHtml({
+    langAttr,
+    app,
+    titleMetaTag,
+    title,
+    analyticID,
+    ...layoutAttributes,
+  });
 }
 
 function layoutMiddleware(basePath) {
