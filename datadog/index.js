@@ -7,14 +7,14 @@ const { version } = require(resolve(appRoot, 'package.json'));
 const { getLogPrefix } = require('../helpers/log');
 const logger = require('../logger');
 
-const init = () => {
-  if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+const init = (env) => {
+  if (env === 'development') {
     return;
   }
   require('dd-trace').init({
     logInjection: true,
     version,
-    env: process.env.NODE_ENV,
+    env,
   });
 
   require('source-map-support').install();

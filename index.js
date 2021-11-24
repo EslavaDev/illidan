@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/order
 const env = require('./env');
-require('./datadog')();
+require('./datadog')(env);
 const { resolve } = require('path');
 const { handle } = require('i18next-http-middleware');
 const i18next = require('i18next');

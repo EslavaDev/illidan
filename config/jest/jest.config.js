@@ -37,8 +37,8 @@ const projects =
           rootDir,
           testEnvironment: 'jsdom',
           testMatch: [
-            '<rootDir>/**/__tests__/**/*?(.client).[jt]s?(x)',
-            '<rootDir>/**/*?(.client).+(spec|test).[jt]s?(x)',
+            '<rootDir>/**/__tests__/**/*.client.[jt]s?(x)',
+            '<rootDir>/**/*.client.+(spec|test).[jt]s?(x)',
           ],
           ...sharedConfig,
         },
