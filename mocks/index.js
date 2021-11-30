@@ -31,7 +31,17 @@ function getMockPath(req) {
   )}/${lastPathPart}.json`;
 }
 
-module.exports = function (interceptRoutes) {
+let interceptor;
+
+function restore() {
+  if (!interceptor) {
+    return;
+  }
+  interceptor.restore();
+  interceptor = null;
+}
+
+function initMocks(interceptRoutes) {
   if (!interceptRoutes) {
     throw Error('Intercept routes regex required');
   }
@@ -39,7 +49,7 @@ module.exports = function (interceptRoutes) {
   interceptRoutes = Array.isArray(interceptRoutes)
     ? interceptRoutes
     : [interceptRoutes];
-  const interceptor = createInterceptor({
+  interceptor = createInterceptor({
     modules: [interceptClientRequest],
     async resolver(request) {
       if (!isMatch(request.url.href, interceptRoutes)) {
@@ -110,4 +120,13 @@ module.exports = function (interceptRoutes) {
   });
 
   interceptor.apply();
+}
+
+process.on('disconnect', () => {
+  restore();
+});
+
+module.exports = {
+  initMocks,
+  restore,
 };
