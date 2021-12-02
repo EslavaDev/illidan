@@ -15,14 +15,7 @@ const extendCspHeaders = () => {
     contentSecurityPolicy: {
       directives: {
         ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-        'script-src': [
-          "'self'",
-          "'unsafe-inline'",
-          '*.conektame.io',
-          '*.conekta.com',
-          'www.googletagmanager.com',
-          ...scriptSrc,
-        ],
+        'script-src': ["'self'", 'www.googletagmanager.com', ...scriptSrc],
         'connect-src': [
           "'self'",
           'rum-http-intake.logs.datadoghq.com',

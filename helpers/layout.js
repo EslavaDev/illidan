@@ -1,5 +1,7 @@
 const { Helmet: ReactHelmet } = require('react-helmet');
 const { ServerStyleSheet } = require('styled-components');
+const serialize = require('serialize-javascript');
+const Page = require('../declarative/Page');
 
 const buildPreLayoutAttributes = (extractor, i18n) => {
   const sheet = new ServerStyleSheet();
@@ -11,9 +13,20 @@ const buildPreLayoutAttributes = (extractor, i18n) => {
   };
 };
 
-const buildPostLayoutAttributes = (extractor, sheet) => {
+const buildPostLayoutAttributes = (extractor, sheet, nonce) => {
   const { htmlAttributes, meta, link, style, script, bodyAttributes } =
     ReactHelmet.renderStatic();
+  const pageState = Page.rewind();
+
+  const preloadedStateTag = pageState
+    ? `<script nonce="${nonce}">window.__PRELOADED_STATE__ = ${serialize(
+        pageState,
+        {
+          isJSON: true,
+        },
+      )};</script>`
+    : '';
+
   const helmetTags = {
     htmlAttributes: htmlAttributes.toString(),
     meta: meta.toString(),
@@ -23,7 +36,9 @@ const buildPostLayoutAttributes = (extractor, sheet) => {
     bodyAttributes: bodyAttributes.toString(),
   };
   // Collect scripts
-  const loadableScriptTags = extractor ? extractor.getScriptTags() : '';
+  const loadableScriptTags = extractor
+    ? extractor.getScriptTags({ nonce })
+    : '';
 
   // Collect styles
   const loadableStyleTags = extractor ? extractor.getStyleTags() : '';
@@ -36,6 +51,7 @@ const buildPostLayoutAttributes = (extractor, sheet) => {
     loadableScriptTags,
     loadableStyleTags,
     styleTags,
+    preloadedStateTag,
   };
 };
 

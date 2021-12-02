@@ -8,7 +8,6 @@ const versionApplication = (req, _res, next) => {
     name,
     version: `v${version}`,
   };
-  console.log(req.ping);
   next();
 };
 

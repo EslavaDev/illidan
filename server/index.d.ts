@@ -19,6 +19,7 @@ declare global {
         }
         export interface Request extends  I18NextRequest {
             locals: Record<string, any>;
+            nonce: string;
         }
     }
 }

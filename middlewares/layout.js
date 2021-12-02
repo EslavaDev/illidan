@@ -52,7 +52,14 @@ function buildComponentRenderer({ extractor, sheet, Component, i18n }) {
   );
 }
 
-function renderHydrate({ i18n, clientName, basePath, Component, title }) {
+function renderHydrate({
+  i18n,
+  clientName,
+  basePath,
+  Component,
+  title,
+  nonce,
+}) {
   const statsPath = getStatsFilePath();
   const extractor = getChunkExtractor({ statsPath, clientName, basePath });
   const { langAttr, sheet } = buildPreLayoutAttributes(extractor, i18n);
@@ -61,7 +68,7 @@ function renderHydrate({ i18n, clientName, basePath, Component, title }) {
     buildComponentRenderer({ extractor, sheet, Component, i18n }),
   );
 
-  const layoutAttributes = buildPostLayoutAttributes(extractor, sheet);
+  const layoutAttributes = buildPostLayoutAttributes(extractor, sheet, nonce);
 
   let i18nClient;
   if (i18n) {
@@ -80,11 +87,12 @@ function renderHydrate({ i18n, clientName, basePath, Component, title }) {
     title,
     analyticID,
     i18nClient,
+    nonce,
     ...layoutAttributes,
   });
 }
 
-function renderStatic({ i18n, clientName, basePath, Component, title }) {
+function renderStatic({ i18n, clientName, basePath, Component, title, nonce }) {
   const statsPath = getStatsFilePath();
   const extractor =
     clientName && getChunkExtractor({ statsPath, clientName, basePath });
@@ -95,7 +103,7 @@ function renderStatic({ i18n, clientName, basePath, Component, title }) {
     buildComponentRenderer({ extractor, sheet, Component, i18n }),
   );
 
-  const layoutAttributes = buildPostLayoutAttributes(extractor, sheet);
+  const layoutAttributes = buildPostLayoutAttributes(extractor, sheet, nonce);
 
   const titleMetaTag = getHeadMetaTags({ title });
   return buildCommonHtml({
@@ -104,6 +112,7 @@ function renderStatic({ i18n, clientName, basePath, Component, title }) {
     titleMetaTag,
     title,
     analyticID,
+    nonce,
     ...layoutAttributes,
   });
 }
@@ -114,7 +123,8 @@ function layoutMiddleware(basePath) {
       Component,
       { title, clientName, toStaticMarkup },
     ) => {
-      const { i18n } = req;
+      const { i18n, nonce } = req;
+
       if (!isValidElementType(Component)) {
         const err = Error(
           'Render function only accepts valid React Element types',
@@ -123,7 +133,14 @@ function layoutMiddleware(basePath) {
         return;
       }
       const renderFn = toStaticMarkup ? renderStatic : renderHydrate;
-      const html = renderFn({ i18n, clientName, basePath, Component, title });
+      const html = renderFn({
+        i18n,
+        clientName,
+        basePath,
+        Component,
+        title,
+        nonce,
+      });
       res.header('Content-Type', 'text/html; charset=utf-8');
       res.send(html);
     };

@@ -6,26 +6,11 @@ if (process.env.IS_BROWSER) {
   module.exports = ({ className, children }) =>
     createElement('div', { className }, children);
 } else {
-  const serialize = require('serialize-javascript');
-  const Helmet = require('react-helmet').default;
-  const Page = ({ children, state, className }) =>
-    createElement(
-      'div',
-      { className },
-      state &&
-        createElement(
-          Helmet,
-          {},
-          createElement(
-            'script',
-            {},
-            `window.__PRELOADED_STATE__ = ${serialize(state, {
-              isJSON: true,
-            })};`,
-          ),
-        ),
-      children,
-    );
+  const withSideEffect = require('react-side-effect');
+  const reducePropsToState = (propsList) =>
+    propsList.length ? propsList[0].state : null;
+  const Page = ({ children, className }) =>
+    createElement('div', { className }, children);
 
-  module.exports = Page;
+  module.exports = withSideEffect(reducePropsToState, () => {})(Page);
 }

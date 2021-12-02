@@ -1,11 +1,11 @@
 const serialize = require('serialize-javascript');
 
-const injectGoogleAnalytics = ({ gTag }) => {
+const injectGoogleAnalytics = ({ gTag, nonce }) => {
   if (!gTag) {
     return '';
   }
-  return `<script async src="https://www.googletagmanager.com/gtag/js?id=${gTag}"></script>
-  <script>
+  return `<script async src="https://www.googletagmanager.com/gtag/js?id=${gTag}" nonce="${nonce}"></script>
+  <script nonce="${nonce}">
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
@@ -17,6 +17,7 @@ const injectGoogleAnalytics = ({ gTag }) => {
 const buildCommonHtml = ({
   helmetTags,
   loadableStyleTags,
+  preloadedStateTag,
   styleTags,
   loadableScriptTags,
   title,
@@ -25,6 +26,7 @@ const buildCommonHtml = ({
   langAttr,
   app,
   i18nClient,
+  nonce,
 }) => `
 <!doctype html>
 <html ${langAttr} ${helmetTags.htmlAttributes}>
@@ -40,10 +42,11 @@ const buildCommonHtml = ({
 </head>
 <body ${helmetTags.bodyAttributes}>
     <div id="app">${app}</div>
-    ${injectGoogleAnalytics({ gTag: analyticID })}
-    <script>(function(){window.__I18N__ = ${
-      i18nClient ? serialize(i18nClient) : null
-    }}).apply(window)</script>
+    ${preloadedStateTag}
+    ${injectGoogleAnalytics({ gTag: analyticID, nonce })}
+    <script nonce="${nonce}">(function(){window.__I18N__ = ${
+  i18nClient ? serialize(i18nClient) : null
+}}).apply(window)</script>
     ${helmetTags.script}
     ${loadableScriptTags}
 </body>
