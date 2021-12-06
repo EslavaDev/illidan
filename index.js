@@ -12,7 +12,6 @@ const { createDevServer } = require('./helpers/devServer');
 const { extendCspHeaders } = require('./helpers/cspHeaders');
 const logger = require('./logger');
 const { versionApplication } = require('./middlewares/version');
-const { nonceMiddleware } = require('./middlewares/nonceMiddleware');
 
 function handleFatalError(err) {
   logger.error(`Unhandled Error - ${err.message}`);
@@ -47,9 +46,6 @@ const initApp = async ({ appRouter, apiRouter, i18n, onlyServer }) => {
 
   if (process.env.NODE_ENV === 'development') {
     app.use(LogRoute);
-  }
-  if (!onlyServer) {
-    app.use(nonceMiddleware);
   }
 
   app.get(`${basePath}/ping`, versionApplication, (req, res) =>
