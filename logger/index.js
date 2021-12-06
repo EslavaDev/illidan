@@ -7,14 +7,10 @@ const logger = createLogger({
   transports: [],
 });
 
-if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-  logger.add(
-    new transports.Console({
-      format: format.simple(),
-    }),
-  );
-} else {
-  logger.add(new transports.Console());
-}
+logger.add(
+  new transports.Console({
+    format: format.simple(),
+  }),
+);
 
 module.exports = logger;
