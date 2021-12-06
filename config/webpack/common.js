@@ -6,10 +6,18 @@ const { ModuleFederationPlugin } = require('webpack').container;
 // eslint-disable-next-line import/no-dynamic-require
 const cronosConfig = require(path.resolve(process.cwd(), 'cronos.config'));
 
-const { spa: { htmlTemplate = null, federatedModule = null } = {} } =
-  cronosConfig;
+const {
+  spa: {
+    federatedModule = null,
+    htmlTemplate = null,
+    publicPath = 'auto',
+  } = {},
+} = cronosConfig;
 
 module.exports = {
+  output: {
+    publicPath,
+  },
   optimization: {
     splitChunks: {
       cacheGroups: {
