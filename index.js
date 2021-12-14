@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/order
-const env = require('./env');
-require('./datadog')(env);
+const nodeEnv = require('./env');
+require('./datadog')(nodeEnv);
 const { resolve } = require('path');
 const { handle } = require('i18next-http-middleware');
 const i18next = require('i18next');
@@ -32,6 +32,11 @@ const initApp = async ({ appRouter, apiRouter, i18n, onlyServer }) => {
   }
 
   const app = express();
+  const cacheStatics = {
+    etag: true,
+    maxAge: '5m',
+    cacheControl: nodeEnv !== 'development',
+  };
 
   app.use(extendCspHeaders());
   app.use(
@@ -53,7 +58,7 @@ const initApp = async ({ appRouter, apiRouter, i18n, onlyServer }) => {
   );
   app.use(
     `${basePath}/static`,
-    express.static(resolve(`${process.cwd()}/public`)),
+    express.static(resolve(`${process.cwd()}/public`), cacheStatics)
   );
   if (!onlyServer) {
     const {
@@ -80,7 +85,7 @@ const initApp = async ({ appRouter, apiRouter, i18n, onlyServer }) => {
       app.use(basePath, appRouter);
     }
   }
-  const server = env === 'development' ? createDevServer(app) : app;
+  const server = nodeEnv === 'development' ? createDevServer(app) : app;
 
   server.listen(port, () => {
     logger.info(`Listening on port ${chalk.greenBright(port)}`);
