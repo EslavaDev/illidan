@@ -2,6 +2,12 @@ process.env.TZ = 'UTC';
 require('../../env');
 require('@testing-library/jest-dom/extend-expect');
 
+const path = require('path');
+
+// eslint-disable-next-line import/no-dynamic-require
+const { jest: { setupBeforeTest } = {} } =
+  require(path.resolve(process.cwd(), 'cronos.config')) || {};
+
 global.matchMedia =
   global.matchMedia ||
   function () {
@@ -33,3 +39,8 @@ global.IntersectionObserver = class IntersectionObserver {
     return null;
   }
 };
+
+if (setupBeforeTest) {
+  // eslint-disable-next-line import/no-dynamic-require
+  require(setupBeforeTest);
+}

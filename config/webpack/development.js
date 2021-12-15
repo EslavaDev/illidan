@@ -29,13 +29,14 @@ module.exports = merge(commonConfig, {
     ],
   },
   output: {
-    filename: `[name].js`,
+    filename: `js/[name].js`,
+    chunkFilename: 'js/chunks/[name].js',
   },
   plugins: [
     process.env.CRONOS_SERVE_SPA && new ReactRefreshWebpackPlugin(),
     !process.env.CRONOS_SERVE_SPA &&
       new MiniCssExtractPlugin({
-        filename: '[name].css',
+        filename: 'css/[name].css',
         ignoreOrder: true,
       }),
     new webpack.SourceMapDevToolPlugin({

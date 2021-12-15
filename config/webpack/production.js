@@ -7,7 +7,8 @@ const commonConfig = require('./common');
 module.exports = merge(commonConfig, {
   mode: 'production',
   output: {
-    filename: `[name].[chunkhash:8].js`,
+    filename: `js/[name].[chunkhash:8].js`,
+    chunkFilename: 'js/chunks/[id].[chunkhash:8].js',
   },
   module: {
     rules: [
@@ -17,27 +18,9 @@ module.exports = merge(commonConfig, {
       },
     ],
   },
-  /* optimization: {
-    splitChunks: {
-      chunks: 'async',
-      minSize: 20000,
-      minRemainingSize: 0,
-      minChunks: 1,
-      maxAsyncRequests: 30,
-      maxInitialRequests: 30,
-      enforceSizeThreshold: 50000,
-      cacheGroups: {
-        default: {
-          minChunks: 2,
-          priority: -20,
-          reuseExistingChunk: true,
-        },
-      }
-    }
-  }, */
   plugins: [
     new MiniCssExtractPlugin({
-      filename: '[name].[chunkhash:8].css',
+      filename: 'css/[id].[chunkhash:8].css',
       ignoreOrder: true,
     }),
     // new BundleAnalyzerPlugin(),
