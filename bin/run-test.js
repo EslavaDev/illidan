@@ -26,6 +26,7 @@ function runTests({ env, coverage, watch, silent }) {
       ...process.env,
       NODE_ENV: 'test',
       CRONOS_TEST_ENV: env,
+      TZ: 'UTC',
     },
     cwd: process.cwd(),
     stdio: 'inherit',

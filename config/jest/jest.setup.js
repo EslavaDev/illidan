@@ -1,4 +1,3 @@
-process.env.TZ = 'UTC';
 require('../../env');
 require('@testing-library/jest-dom/extend-expect');
 
