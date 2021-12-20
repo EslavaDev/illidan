@@ -58,7 +58,7 @@ const initApp = async ({ appRouter, apiRouter, i18n, onlyServer }) => {
   );
   app.use(
     `${basePath}/static`,
-    express.static(resolve(`${process.cwd()}/public`), cacheStatics)
+    express.static(resolve(`${process.cwd()}/public`), cacheStatics),
   );
   if (!onlyServer) {
     const {
@@ -76,6 +76,7 @@ const initApp = async ({ appRouter, apiRouter, i18n, onlyServer }) => {
 
   if (appRouter) {
     if (!onlyServer) {
+      app.use(require('./middlewares/deviceDetect').DeviceDetectMiddleware);
       app.use(
         basePath,
         require('./middlewares/layout').layoutMiddleware(basePath),
