@@ -15,6 +15,7 @@ const { buildCommonHtml } = require('../helpers/htmlBuilder');
 const { addNonceToCSP } = require('../helpers/cspHeaders');
 
 const analyticID = process.env.GOOGLE_ANALYTICS_ID;
+const tagManagerID = process.env.GOOGLE_TAG_MANAGER_ID;
 
 function SSRComponent({ children, i18n }) {
   const props = {};
@@ -89,6 +90,7 @@ function renderHydrate({
     titleMetaTag,
     title,
     analyticID,
+    tagManagerID,
     i18nClient,
     nonce,
     ...layoutAttributes,
