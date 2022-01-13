@@ -15,7 +15,12 @@ const extendCspHeaders = () => {
     contentSecurityPolicy: {
       directives: {
         ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-        'script-src': ["'self'", 'www.googletagmanager.com', ...scriptSrc],
+        'script-src': [
+          "'self'",
+          'www.googletagmanager.com',
+          ({ nonce }) => (nonce ? `'nonce-${nonce}'` : ''),
+          ...scriptSrc,
+        ],
         'connect-src': [
           "'self'",
           'rum-http-intake.logs.datadoghq.com',
@@ -29,22 +34,6 @@ const extendCspHeaders = () => {
   });
 };
 
-const addNonceToCSP = (res, nonce) => {
-  const headerName = 'Content-Security-Policy';
-  const scriptSrc = 'script-src';
-  const csp = String(res.getHeader(headerName));
-  const newCsp = csp
-    .split(';')
-    .map((policy) => {
-      if (!policy.startsWith(scriptSrc) || policy.split(' ')[0] !== scriptSrc) {
-        return policy;
-      }
-      return `${policy} 'nonce-${nonce}'`;
-    })
-    .join(';');
-  res.setHeader(headerName, newCsp);
-};
 module.exports = {
   extendCspHeaders,
-  addNonceToCSP,
 };

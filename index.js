@@ -38,6 +38,10 @@ const initApp = async ({ appRouter, apiRouter, i18n, onlyServer }) => {
     cacheControl: nodeEnv !== 'development',
   };
 
+  if (!onlyServer) {
+    app.use(require('./middlewares/nonce').nonceMiddleware);
+  }
+
   app.use(extendCspHeaders());
   app.use(
     express.urlencoded({

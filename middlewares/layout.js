@@ -4,15 +4,12 @@ const { isValidElementType } = require('react-is');
 const { ChunkExtractor } = require('@loadable/server');
 const { I18nextProvider } = require('react-i18next');
 
-const crypto = require('crypto');
-const { v4 } = require('uuid');
 const { getStatsFilePath } = require('../helpers/statsFile');
 const {
   buildPreLayoutAttributes,
   buildPostLayoutAttributes,
 } = require('../helpers/layout');
 const { buildCommonHtml } = require('../helpers/htmlBuilder');
-const { addNonceToCSP } = require('../helpers/cspHeaders');
 
 const analyticID = process.env.GOOGLE_ANALYTICS_ID;
 const tagManagerID = process.env.GOOGLE_TAG_MANAGER_ID;
@@ -128,11 +125,7 @@ function layoutMiddleware(basePath) {
       Component,
       { title, clientName, toStaticMarkup },
     ) => {
-      const hash = crypto.createHash('sha256');
-      hash.update(v4());
-      const nonce = hash.digest('base64');
-
-      const { i18n } = req;
+      const { i18n, nonce } = req;
 
       if (!isValidElementType(Component)) {
         const err = Error(
@@ -150,7 +143,6 @@ function layoutMiddleware(basePath) {
         title,
         nonce,
       });
-      addNonceToCSP(res, nonce);
       res.header('Content-Type', 'text/html; charset=utf-8');
       res.send(html);
     };
