@@ -1,6 +1,6 @@
 {
   "name": "@conekta/cronos",
-  "version": "0.6.6",
+  "version": "0.6.7",
   "description": "Library to build server apps using react as live template",
   "main": "index.js",
   "repository": {
@@ -73,7 +73,7 @@
     "jest": "^27.4.7",
     "lodash.merge": "^4.6.2",
     "matcher": "4.0.0",
-    "mini-css-extract-plugin": "^2.4.6",
+    "mini-css-extract-plugin": "2.4.7",
     "nodemon": "^2.0.15",
     "react-helmet": "^6.1.0",
     "react-i18next": "^11.15.3",
