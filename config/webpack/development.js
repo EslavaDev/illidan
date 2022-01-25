@@ -41,7 +41,6 @@ module.exports = merge(commonConfig, {
       }),
     new webpack.SourceMapDevToolPlugin({
       filename: '[file].map',
-      publicPath: '/static/',
     }),
   ].filter(Boolean),
   optimization: {

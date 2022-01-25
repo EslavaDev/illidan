@@ -60,10 +60,12 @@ const initApp = async ({ appRouter, apiRouter, i18n, onlyServer }) => {
   app.get(`${basePath}/ping`, versionApplication, (req, res) =>
     res.json(req.ping),
   );
-  app.use(
-    `${basePath}/static`,
-    express.static(resolve(`${process.cwd()}/public`), cacheStatics),
-  );
+  if (!onlyServer) {
+    app.use(
+      `${basePath}/static`,
+      express.static(resolve(`${process.cwd()}/public`), cacheStatics),
+    );
+  }
   if (!onlyServer) {
     const {
       redirectToChunkMiddleware,

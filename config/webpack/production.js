@@ -10,6 +10,17 @@ module.exports = merge(commonConfig, {
     filename: `js/[name].[chunkhash:8].js`,
     chunkFilename: 'js/chunks/[id].[chunkhash:8].js',
   },
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/](react|react-dom|react-i18next|classnames|i18next|styled-components|i18next-browser-languagedetector|axios|@loadable\/component)[\\/]/,
+          chunks: 'all',
+          name: 'vendor',
+        },
+      },
+    },
+  },
   module: {
     rules: [
       {

@@ -18,17 +18,6 @@ module.exports = {
   output: {
     publicPath,
   },
-  optimization: {
-    splitChunks: {
-      cacheGroups: {
-        vendor: {
-          test: /[\\/]node_modules[\\/](react|react-dom|react-i18next|classnames|i18next|styled-components|i18next-browser-languagedetector|axios|@loadable\/component)[\\/]/,
-          chunks: 'all',
-          name: 'vendor',
-        },
-      },
-    },
-  },
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.jsx'],
   },
@@ -58,6 +47,7 @@ module.exports = {
       }),
     htmlTemplate &&
       new HtmlWebpackPlugin({
+        favicon: path.resolve(__dirname, '../../assets/favicon.ico'),
         template: path.resolve(process.cwd(), htmlTemplate),
       }),
     federatedModule && new ModuleFederationPlugin(federatedModule),
