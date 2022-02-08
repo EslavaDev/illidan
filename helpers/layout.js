@@ -1,7 +1,9 @@
 const { Helmet: ReactHelmet } = require('react-helmet');
-const { ServerStyleSheet } = require('styled-components');
 const serialize = require('serialize-javascript');
+const { getServerStyleSheet } = require('./styledComponentsLoader');
 const Page = require('../declarative/Page');
+
+const ServerStyleSheet = getServerStyleSheet();
 
 const buildPreLayoutAttributes = (extractor, i18n) => {
   const sheet = new ServerStyleSheet();

@@ -13,3 +13,4 @@
   - [Code Splitting](./ssr/code-splitting.md)
   - [Dynamic Head](./ssr/dynamic-head.md)
   - [Dynamic Views](./ssr/dynamic-views.md)
+  - [Static Styled Views](./ssr/static-styled-components.md)
