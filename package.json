@@ -1,6 +1,6 @@
 {
   "name": "@conekta/cronos",
-  "version": "0.10.0",
+  "version": "0.10.2",
   "description": "Library to build javascript web apps",
   "main": "index.js",
   "repository": {

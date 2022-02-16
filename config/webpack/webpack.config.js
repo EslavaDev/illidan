@@ -1,4 +1,5 @@
 /* eslint-disable node/no-unpublished-require, node/no-extraneous-require, node/no-unsupported-features/es-syntax, import/no-extraneous-dependencies */
+require('../../env');
 const Dotenv = require('dotenv-webpack');
 const { merge } = require('webpack-merge');
 const path = require('path');
