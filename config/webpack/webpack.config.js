@@ -11,6 +11,8 @@ const root = process.cwd();
 
 // eslint-disable-next-line import/no-dynamic-require
 const { version } = require(path.resolve(root, 'package.json'));
+// eslint-disable-next-line import/no-dynamic-require
+const cronosConfig = require(path.resolve(process.cwd(), 'cronos.config'));
 
 module.exports = (env, { mode }) =>
   // eslint-disable-next-line import/no-dynamic-require
@@ -29,7 +31,7 @@ module.exports = (env, { mode }) =>
         systemvars: true,
         allowEmptyValues: true,
       }),
-      new LoadablePlugin(),
+      !cronosConfig.spa && new LoadablePlugin(),
       new CopyPlugin({
         patterns: [
           {
@@ -38,5 +40,5 @@ module.exports = (env, { mode }) =>
           },
         ],
       }),
-    ],
+    ].filter(Boolean),
   });

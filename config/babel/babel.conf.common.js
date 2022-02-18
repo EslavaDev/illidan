@@ -52,7 +52,10 @@ const getModuleResolver = () => {
   ];
 };
 
-const plugins = [];
+const plugins = [
+  ['@babel/plugin-proposal-decorators', { decoratorsBeforeExport: true }],
+  '@babel/plugin-proposal-class-properties',
+];
 
 const presets = [
   [
