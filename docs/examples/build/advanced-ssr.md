@@ -9,10 +9,10 @@ Add these scripts to your package.json scripts section
 ```json
 {
   "scripts": {
-    "client:watch": "cronos client-build --mode=development --watch",
-    "client:build": "cronos client-build --mode=production",
-    "server:build": "cronos server-build",
-    "server:dev": "cronos server-dev ./src/index.ts --watch",
+    "client:watch": "illidan client-build --mode=development --watch",
+    "client:build": "illidan client-build --mode=production",
+    "server:build": "illidan server-build",
+    "server:dev": "illidan server-dev ./src/index.ts --watch",
     "start": "node lib/index.js"
   }
 }
@@ -43,13 +43,13 @@ export const ExampleView = () => {
 
 Create your client file in `src/app/pages/example/client.jsx`
 ```jsx
-import { hydrate } from '@conekta/cronos/client';
+import { hydrate } from '@conekta/illidan/client';
 import { ExampleView } from './view';
 
 hydrate(() => <ExampleView />);
 ```
 
-Create cronos config file `cronos.config.js` in the root of your project to setup your client entry.
+Create illidan config file `illidan.config.js` in the root of your project to setup your client entry.
 
 ```js
 module.exports = {
@@ -66,7 +66,7 @@ import ExampleView from './view'
 export const ExampleController = (req, res) => {
     res.reactRender(() => <ExampleView />, {
         title: 'Example page',
-        clientName: 'example.view', // clientName is the clientEntry defined in cronos.config
+        clientName: 'example.view', // clientName is the clientEntry defined in illidan.config
     })
 }
 
@@ -74,7 +74,7 @@ export const ExampleController = (req, res) => {
 Create your app router in `src/app/server.js`
 
 ```jsx
-import { Router } from '@conekta/cronos/server';
+import { Router } from '@conekta/illidan/server';
 import { ExampleController } from './pages/example/controller';
 
 const router = Router();
@@ -86,7 +86,7 @@ module.exports = router;
 
 Init the app with your router in `src/index.js`.
 ```js
-import initApp from '@conekta/cronos';
+import initApp from '@conekta/illidan';
 import  App from 'app/server';
 
 initApp({

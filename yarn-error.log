@@ -1,0 +1,148 @@
+Arguments: 
+  /Users/danielalejandroeslavaherrera/.nvm/versions/node/v14.17.3/bin/node /Users/danielalejandroeslavaherrera/.nvm/versions/node/v14.17.3/bin/yarn
+
+PATH: 
+  /Users/danielalejandroeslavaherrera/.nvm/versions/node/v14.17.3/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/Users/danielalejandroeslavaherrera/Library/Android/sdk/tools:/Users/danielalejandroeslavaherrera/Library/Android/sdk/platform-tools:/Users/danielalejandroeslavaherrera/.android/avd:/Users/danielalejandroeslavaherrera/Documents/flutter/bin:/Users/danielalejandroeslavaherrera/Library/Android/sdk/emulator:/Users/danielalejandroeslavaherrera/Library/Android/sdk/tools/bin:/Users/danielalejandroeslavaherrera/Library/Android/sdk/tools:/Users/danielalejandroeslavaherrera/Library/Android/sdk/platform-tools:/Users/danielalejandroeslavaherrera/.android/avd:/Users/danielalejandroeslavaherrera/Documents/flutter/bin:/Users/danielalejandroeslavaherrera/Library/Android/sdk/emulator:/Users/danielalejandroeslavaherrera/Library/Android/sdk/tools:/Users/danielalejandroeslavaherrera/Library/Android/sdk/tools/bin:/Users/danielalejandroeslavaherrera/Library/Android/sdk/platform-tools
+
+Yarn version: 
+  1.22.17
+
+Node version: 
+  14.17.3
+
+Platform: 
+  darwin x64
+
+Trace: 
+  Error: Failed to replace env in config: ${NPM_TOKEN}
+      at /Users/danielalejandroeslavaherrera/.nvm/versions/node/v14.17.3/lib/node_modules/yarn/lib/cli.js:99004:13
+      at String.replace (<anonymous>)
+      at envReplace (/Users/danielalejandroeslavaherrera/.nvm/versions/node/v14.17.3/lib/node_modules/yarn/lib/cli.js:98999:16)
+      at Function.normalizeConfig (/Users/danielalejandroeslavaherrera/.nvm/versions/node/v14.17.3/lib/node_modules/yarn/lib/cli.js:31930:69)
+      at NpmRegistry.<anonymous> (/Users/danielalejandroeslavaherrera/.nvm/versions/node/v14.17.3/lib/node_modules/yarn/lib/cli.js:31960:34)
+      at Generator.next (<anonymous>)
+      at step (/Users/danielalejandroeslavaherrera/.nvm/versions/node/v14.17.3/lib/node_modules/yarn/lib/cli.js:310:30)
+      at /Users/danielalejandroeslavaherrera/.nvm/versions/node/v14.17.3/lib/node_modules/yarn/lib/cli.js:321:13
+
+npm manifest: 
+  {
+    "name": "@eslavadev/illidan",
+    "version": "0.11.0",
+    "description": "Library to build javascript web apps",
+    "main": "index.js",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/eslavadev/illidan.git"
+    },
+    "keywords": [
+      "ssr",
+      "react"
+    ],
+    "author": "EslavaDev",
+    "license": "MIT",
+    "bugs": {
+      "url": "https://github.com/eslavadev/illidan/issues"
+    },
+    "homepage": "https://github.com/eslavadev/illidan#readme",
+    "scripts": {
+      "lint": "eslint --fix {**/*,*}.{js,ts,jsx,tsx,html}",
+      "install-peers": "npm-install-peers"
+    },
+    "bin": {
+      "illidan": "./bin/index.js"
+    },
+    "peerDependencies": {
+      "react": "17.x",
+      "react-dom": "17.x"
+    },
+    "dependencies": {
+      "@babel/cli": "7.16.8",
+      "@babel/core": "7.16.7",
+      "@babel/node": "7.16.8",
+      "@babel/plugin-proposal-class-properties": "^7.16.7",
+      "@babel/plugin-proposal-decorators": "^7.17.2",
+      "@babel/preset-env": "7.16.8",
+      "@babel/preset-flow": "7.16.7",
+      "@babel/preset-react": "7.16.7",
+      "@babel/preset-typescript": "7.16.7",
+      "@babel/register": "7.16.9",
+      "@datadog/browser-rum": "3.11.0",
+      "@loadable/babel-plugin": "5.13.2",
+      "@loadable/component": "5.15.2",
+      "@loadable/server": "5.15.2",
+      "@loadable/webpack-plugin": "5.15.2",
+      "@mswjs/interceptors": "0.13.1",
+      "@pmmmwh/react-refresh-webpack-plugin": "0.5.4",
+      "@testing-library/jest-dom": "5.16.1",
+      "@types/express": "4.17.13",
+      "@types/loadable__component": "5.13.4",
+      "@types/react-side-effect": "1.1.1",
+      "@types/ua-parser-js": "0.7.36",
+      "babel-loader": "8.2.3",
+      "babel-plugin-module-resolver": "4.1.0",
+      "babel-plugin-transform-react-remove-prop-types": "0.4.24",
+      "babel-plugin-transform-require-ignore": "0.1.1",
+      "body-parser": "1.19.1",
+      "chalk": "4.1.2",
+      "clean-webpack-plugin": "4.0.0",
+      "copy-webpack-plugin": "10.2.0",
+      "css-loader": "6.5.1",
+      "dd-trace": "1.6.0",
+      "dotenv": "11.0.0",
+      "dotenv-webpack": "7.0.3",
+      "express": "4.17.2",
+      "fs-extra": "10.0.0",
+      "headers-utils": "3.0.2",
+      "helmet": "4.6.0",
+      "html-webpack-plugin": "5.5.0",
+      "http-status-codes": "2.2.0",
+      "i18next": "21.6.6",
+      "i18next-browser-languagedetector": "6.1.2",
+      "i18next-http-middleware": "3.1.5",
+      "jest": "27.4.7",
+      "lodash.merge": "4.6.2",
+      "matcher": "4.0.0",
+      "mini-css-extract-plugin": "2.4.7",
+      "nodemon": "2.0.15",
+      "react-helmet": "6.1.0",
+      "react-i18next": "11.15.3",
+      "react-is": "17.0.2",
+      "react-refresh": "0.11.0",
+      "react-side-effect": "2.1.1",
+      "sass": "1.48.0",
+      "sass-loader": "12.4.0",
+      "serialize-javascript": "6.0.0",
+      "source-map-support": "0.5.21",
+      "style-loader": "3.3.1",
+      "ua-parser-js": "1.0.2",
+      "url-loader": "4.1.1",
+      "uuid": "8.3.2",
+      "webpack": "5.66.0",
+      "webpack-bundle-analyzer": "4.5.0",
+      "webpack-cli": "4.9.1",
+      "webpack-dev-server": "4.7.3",
+      "webpack-merge": "5.8.0",
+      "winston": "3.4.0",
+      "yargs": "17.3.1"
+    },
+    "devDependencies": {
+      "eslint": "7.32.0",
+      "eslint-config-airbnb-base": "14.2.1",
+      "eslint-config-node": "4.1.0",
+      "eslint-config-prettier": "8.3.0",
+      "eslint-plugin-node": "11.1.0",
+      "eslint-plugin-prettier": "4.0.0",
+      "npm-install-peers": "1.2.2",
+      "prettier": "2.5.1",
+      "typescript": "4.5.4"
+    },
+    "engines": {
+      "node": ">=14"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

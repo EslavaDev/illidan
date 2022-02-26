@@ -1,6 +1,6 @@
 # Typescript support
 
-Cronos support Typescript using babel-typescript plugin, it means during build phase types won't be checked. If you need development type checking, follow these instructions:
+Illidan support Typescript using babel-typescript plugin, it means during build phase types won't be checked. If you need development type checking, follow these instructions:
 
 ## Install
 

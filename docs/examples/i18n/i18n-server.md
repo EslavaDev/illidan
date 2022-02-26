@@ -25,7 +25,7 @@ export default {
 
 ```
 
-Pass i18n config to cronos:
+Pass i18n config to illidan:
 ```js
 import App from 'app/server';
 import i18n from './i18n';

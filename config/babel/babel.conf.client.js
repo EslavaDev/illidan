@@ -1,7 +1,7 @@
 const plugins = [];
 
 if (
-  process.env.CRONOS_SERVE_SPA &&
+  process.env.ILLIDAN_SERVE_SPA &&
   (!process.env.NODE_ENV || process.env.NODE_ENV === 'development')
 ) {
   plugins.push('react-refresh/babel');

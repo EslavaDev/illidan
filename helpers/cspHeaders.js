@@ -1,10 +1,10 @@
 const path = require('path');
 // eslint-disable-next-line import/no-dynamic-require
-const cronosConfig = require(path.resolve(process.cwd(), 'cronos.config'));
+const illidanConfig = require(path.resolve(process.cwd(), 'illidan.config'));
 const helmet = require('helmet');
 
 const extendCspHeaders = () => {
-  const { extendCSP } = cronosConfig || { extendCSP: null };
+  const { extendCSP } = illidanConfig || { extendCSP: null };
   const { connectSrc, scriptSrc, frameSrc } = extendCSP || {
     connectSrc: [],
     frameSrc: [],

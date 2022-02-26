@@ -1,9 +1,9 @@
 # Client i18n config
 
-You can use i18n importing cronos utility
+You can use i18n importing illidan utility
 
 ```jsx
-import { useTranslation } from '@conekta/cronos/i18n';
+import { useTranslation } from '@conekta/illidan/i18n';
 
 export const ExampleComponent = () => {
     const { t } = useTranslation()

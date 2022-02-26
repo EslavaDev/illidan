@@ -10,7 +10,7 @@ module.exports = merge(commonConfig, {
   devtool: 'source-map',
   devServer: {
     historyApiFallback: true,
-    host: 'dev.conektame.io',
+    host: '127.0.0.1',
     https: true,
     hot: true,
   },
@@ -19,7 +19,7 @@ module.exports = merge(commonConfig, {
       {
         test: /\.(s[ac]ss|css)$/,
         use: [
-          process.env.CRONOS_SERVE_SPA
+          process.env.ILLIDAN_SERVE_SPA
             ? 'style-loader'
             : MiniCssExtractPlugin.loader,
           'css-loader',
@@ -33,8 +33,8 @@ module.exports = merge(commonConfig, {
     chunkFilename: 'js/chunks/[name].js',
   },
   plugins: [
-    process.env.CRONOS_SERVE_SPA && new ReactRefreshWebpackPlugin(),
-    !process.env.CRONOS_SERVE_SPA &&
+    process.env.ILLIDAN_SERVE_SPA && new ReactRefreshWebpackPlugin(),
+    !process.env.ILLIDAN_SERVE_SPA &&
       new MiniCssExtractPlugin({
         filename: 'css/[name].css',
         ignoreOrder: true,

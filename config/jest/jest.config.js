@@ -23,10 +23,10 @@ const sharedConfig = {
   setupFilesAfterEnv: [path.resolve(__dirname, 'jest.setup.js')],
 };
 
-const defaultEnv = process.env.CRONOS_TEST_ENV === 'server' ? 'node' : 'jsdom';
+const defaultEnv = process.env.ILLIDAN_TEST_ENV === 'server' ? 'node' : 'jsdom';
 
 const projects =
-  process.env.CRONOS_TEST_ENV === 'universal'
+  process.env.ILLIDAN_TEST_ENV === 'universal'
     ? [
         {
           displayName: 'SERVER',
@@ -60,6 +60,6 @@ module.exports = {
 
 // file.client.spec.js
 
-// cronos test --env=universal ## Will look for files .client.spec and .server.spec. Default env for ".spec only" files will be jsdom
-// cronos test --env=client|null ## Will look for .spec files. Running on jsdom env
-// cronos test --env=server ## Will look for .spec files. Running on node env
+// illidan test --env=universal ## Will look for files .client.spec and .server.spec. Default env for ".spec only" files will be jsdom
+// illidan test --env=client|null ## Will look for .spec files. Running on jsdom env
+// illidan test --env=server ## Will look for .spec files. Running on node env

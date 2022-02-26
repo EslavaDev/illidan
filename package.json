@@ -1,28 +1,28 @@
 {
-  "name": "@conekta/cronos",
+  "name": "@eslavadev/illidan",
   "version": "0.11.0",
   "description": "Library to build javascript web apps",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/conekta/common-cronos-frontend.git"
+    "url": "git+https://github.com/eslavadev/illidan.git"
   },
   "keywords": [
     "ssr",
     "react"
   ],
-  "author": "Conekta",
+  "author": "EslavaDev",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/conekta/common-cronos-frontend/issues"
+    "url": "https://github.com/eslavadev/illidan/issues"
   },
-  "homepage": "https://github.com/conekta/common-cronos-frontend#readme",
+  "homepage": "https://github.com/eslavadev/illidan#readme",
   "scripts": {
     "lint": "eslint --fix {**/*,*}.{js,ts,jsx,tsx,html}",
     "install-peers": "npm-install-peers"
   },
   "bin": {
-    "cronos": "./bin/index.js"
+    "illidan": "bin/index.js"
   },
   "peerDependencies": {
     "react": "17.x",

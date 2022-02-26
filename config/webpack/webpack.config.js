@@ -12,7 +12,7 @@ const root = process.cwd();
 // eslint-disable-next-line import/no-dynamic-require
 const { version } = require(path.resolve(root, 'package.json'));
 // eslint-disable-next-line import/no-dynamic-require
-const cronosConfig = require(path.resolve(process.cwd(), 'cronos.config'));
+const illidanConfig = require(path.resolve(process.cwd(), 'illidan.config'));
 
 module.exports = (env, { mode }) =>
   // eslint-disable-next-line import/no-dynamic-require
@@ -21,7 +21,7 @@ module.exports = (env, { mode }) =>
       path: path.resolve(root, 'public'),
     },
     // eslint-disable-next-line import/no-dynamic-require
-    entry: require(path.resolve(root, 'cronos.config.js')).clientEntry,
+    entry: require(path.resolve(root, 'illidan.config.js')).clientEntry,
     plugins: [
       new webpack.DefinePlugin({
         'process.env.VERSION': JSON.stringify(version),
@@ -31,7 +31,7 @@ module.exports = (env, { mode }) =>
         systemvars: true,
         allowEmptyValues: true,
       }),
-      !cronosConfig.spa && new LoadablePlugin(),
+      !illidanConfig.spa && new LoadablePlugin(),
       new CopyPlugin({
         patterns: [
           {

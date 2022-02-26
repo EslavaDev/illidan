@@ -1,6 +1,6 @@
 const chalk = require('chalk');
 
-const cliName = '[cronos-cli]';
+const cliName = '[illidan-cli]';
 
 const variants = {
   info: chalk.blueBright('i'),

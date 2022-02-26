@@ -4,7 +4,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { ModuleFederationPlugin } = require('webpack').container;
 // eslint-disable-next-line import/no-dynamic-require
-const cronosConfig = require(path.resolve(process.cwd(), 'cronos.config'));
+const illidanConfig = require(path.resolve(process.cwd(), 'illidan.config'));
 
 const {
   spa: {
@@ -12,7 +12,7 @@ const {
     htmlTemplate = null,
     publicPath = 'auto',
   } = {},
-} = cronosConfig;
+} = illidanConfig;
 
 module.exports = {
   output: {
@@ -41,7 +41,7 @@ module.exports = {
     ],
   },
   plugins: [
-    !process.env.CRONOS_SERVE_SPA &&
+    !process.env.ILLIDAN_SERVE_SPA &&
       new CleanWebpackPlugin({
         verbose: true,
       }),

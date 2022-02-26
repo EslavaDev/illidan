@@ -1,15 +1,15 @@
-# Cronos config file
+# Illidan config file
 
-Cronos config file is required to setup and/or customize initial config for your application.
+Illidan config file is required to setup and/or customize initial config for your application.
 
 | Property    | Description                                                                                                                                            | Type                      | Default   |
 |-------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------|-----------|
 | clientEntry | client entry points configuration, here you should list the static files to be compiled by webpack. See: https://webpack.js.org/concepts/entry-points/ | Array, String, Object     | undefined |
-| spa         | Config to be applied to your SPA application                                                                                                           | `CronosSpaConfig`         | undefined |
-| jest        | Custom jest config to be applied for your unit test                                                                                                    | `CronosJestConfig`        | undefined |
-| extendCSP   | Customize Content-Security-Policy headers for your application (Only available in SSR apps)                                                            | `CronosCSPConfig`         | undefined |
+| spa         | Config to be applied to your SPA application                                                                                                           | `IllidanSpaConfig`         | undefined |
+| jest        | Custom jest config to be applied for your unit test                                                                                                    | `IllidanJestConfig`        | undefined |
+| extendCSP   | Customize Content-Security-Policy headers for your application (Only available in SSR apps)                                                            | `IllidanCSPConfig`         | undefined |
 
-## CronosSpaConfig
+## IllidanSpaConfig
 
 | Property        | Description                                                                              | Type   | Default |
 |-----------------|------------------------------------------------------------------------------------------|--------|---------|
@@ -17,13 +17,13 @@ Cronos config file is required to setup and/or customize initial config for your
 | htmlTemplate    | Setup the html template file path for your SPA application. Eg: ./src/index.html         | String | null    |
 | federatedModule | Setup Webpack Module federation. See: https://webpack.js.org/concepts/module-federation/ | Object | null    |
 
-## CronosJestConfig
+## IllidanJestConfig
 
 | Property        | Description                                                                                                                           | Type   | Default   |
 |-----------------|---------------------------------------------------------------------------------------------------------------------------------------|--------|-----------|
 | setupBeforeTest | Setup additional global configuration to run before all your test. See: https://jestjs.io/docs/configuration#setupfilesafterenv-array | Module | undefined |
 
-## CronosCSPConfig
+## IllidanCSPConfig
 
 | Property   | Description                                                                                                                                                                                                                                                           | Type          | Default |
 |------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------|---------|

@@ -15,7 +15,7 @@ function buildWebpack({ watch, mode, serve, port }) {
   };
   if (serve) {
     webpackArgs.push('serve', '--port', port);
-    env.CRONOS_SERVE_SPA = true;
+    env.ILLIDAN_SERVE_SPA = true;
   }
   if (watch) {
     webpackArgs.push('--watch');

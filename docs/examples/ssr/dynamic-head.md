@@ -1,11 +1,11 @@
 # Dynamic Head
 
-Cronos support Dynamic head (Static and SSR apps), follow these instructions to start using it.
+Illidan support Dynamic head (Static and SSR apps), follow these instructions to start using it.
 
 ## How-to-use
 
 ```js
-import Head from '@conekta/cronos/declarative/Head';
+import Head from '@conekta/illidan/declarative/Head';
 
 export const MainView = () => {
     return (
@@ -24,7 +24,7 @@ export const MainView = () => {
 If for any reason you need to create inline scripts (We do not recommend it) you have to set the nonce attribute ([available in express request](../../api/extending-express.md#request)) due to we do not support inline-scripts without nonce attribute.
 
 ```js
-import Head from '@conekta/cronos/declarative/Head';
+import Head from '@conekta/illidan/declarative/Head';
 
 export const MainView = ({ nonce }) => {
     return (

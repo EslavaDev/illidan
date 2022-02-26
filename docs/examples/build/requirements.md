@@ -15,7 +15,7 @@ This Package is distributed by conekta github registry. Create an `.npmrc` file 
 ## Installation
 
 ```bash
-npm i react react-dom @conekta/cronos
+npm i react react-dom @conekta/illidan
 ```
 
 ## Configure env variables

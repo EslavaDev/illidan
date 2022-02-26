@@ -5,7 +5,7 @@ const path = require('path');
 
 // eslint-disable-next-line import/no-dynamic-require
 const { jest: { setupBeforeTest } = {} } =
-  require(path.resolve(process.cwd(), 'cronos.config')) || {};
+  require(path.resolve(process.cwd(), 'illidan.config')) || {};
 
 global.matchMedia =
   global.matchMedia ||

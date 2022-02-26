@@ -25,7 +25,7 @@ function runTests({ env, coverage, watch, silent }) {
       IS_BROWSER: false,
       ...process.env,
       NODE_ENV: 'test',
-      CRONOS_TEST_ENV: env,
+      ILLIDAN_TEST_ENV: env,
       TZ: 'UTC',
     },
     cwd: process.cwd(),

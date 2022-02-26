@@ -1,6 +1,6 @@
 # Extending express
 
-Cronos add some middlewares to extend express capabilities
+Illidan add some middlewares to extend express capabilities
 
 ## Request
 
@@ -42,13 +42,13 @@ Cronos add some middlewares to extend express capabilities
 
 | Property    | Description                                                                             | Type                                                                      |
 |-------------|-----------------------------------------------------------------------------------------|---------------------------------------------------------------------------|
-| reactRender | Function to render React components in the server and serve and send them to the client | (Component: React.ComponentType, opts: CronosRenderOpts) => Promise<void> |
+| reactRender | Function to render React components in the server and serve and send them to the client | (Component: React.ComponentType, opts: IllidanRenderOpts) => Promise<void> |
 | sendJsAsset | Function to send a specific static js asset                                             | (assetName: string) => void                                               |
 
-### CronosRenderOpts
+### IllidanRenderOpts
 
 | Property       | Description                                                                       | Type    |
 |----------------|-----------------------------------------------------------------------------------|---------|
 | title          | Text to be used as page title in the rendered html page                           | string  |
-| clientName     | Static entry name defined cronos.config file, used to hydrate rendered html page  | string  |
+| clientName     | Static entry name defined illidan.config file, used to hydrate rendered html page  | string  |
 | toStaticMarkup | Flag used to render a static html page or not (static html page does not hydrate) | boolean |

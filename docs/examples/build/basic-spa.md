@@ -9,9 +9,9 @@ Add these scripts to your package.json scripts section
 ```json
 {
   "scripts": {
-    "dev": "cronos client-serve --mode=development --port=9090",
-    "build": "cronos client-build --mode=production",
-    "test": "cronos test -c"
+    "dev": "illidan client-serve --mode=development --port=9090",
+    "build": "illidan client-build --mode=production",
+    "test": "illidan test -c"
   }
 }
 ```
@@ -53,7 +53,7 @@ Create your html template in `src/index.html.ejs`
 </html>
 ```
 
-Create a `cronos.config.js` file in the root of your project:
+Create a `illidan.config.js` file in the root of your project:
 
 ```js
 module.exports = {

@@ -26,7 +26,7 @@ async function run({ page: name }) {
   await fse.outputFile(
     view,
     `import { FC } from 'react';
-import { Page } from '@conekta/cronos/declarative';
+import { Page } from '@eslavadev/illidian/declarative';
 
 export const ${ComponentName}: FC<{ state: any }> = ({ state }) => {
   return (
@@ -42,7 +42,7 @@ export const ${ComponentName}: FC<{ state: any }> = ({ state }) => {
   await fse.outputFile(
     controller,
     `import { FC } from 'react';
-import { Request, Response } from '@conekta/cronos/server';
+import { Request, Response } from '@eslavadev/illidian/server';
 import { ${ComponentName} } from 'app/pages/${name}/view';
 
 export const render = (req: Request, res: Response) => {
@@ -63,8 +63,8 @@ export const render = (req: Request, res: Response) => {
   console.log('Created controller at: ', view);
   await fse.outputFile(
     index,
-    `import { Router } from '@conekta/cronos/server';
-import { isAuthorized } from '@conekta/cronos/middlewares';
+    `import { Router } from '@eslavadev/illidian/server';
+import { isAuthorized } from '@eslavadev/illidian/middlewares';
 import { render } from './controller';
 
 const router = Router();
@@ -83,7 +83,7 @@ export default router;
 
   await fse.outputFile(
     client,
-    `import { hydrate } from '@conekta/cronos/client';
+    `import { hydrate } from '@eslavadev/illidian/client';
 import { ${ComponentName} } from 'app/pages/${name}/view';
 
 hydrate((state) => <${ComponentName} state={state} />);
@@ -92,21 +92,21 @@ hydrate((state) => <${ComponentName} state={state} />);
   );
   console.log('Created client hydrate at: ', client);
 
-  const cronosConfigPath = path.resolve(root, 'cronos.config.js');
+  const illidanConfigPath = path.resolve(root, 'illidan.config.js');
 
   // eslint-disable-next-line import/no-dynamic-require
-  const cronosConfig = require(cronosConfigPath);
-  cronosConfig.clientEntry[name] = [
+  const illidanConfig = require(illidanConfigPath);
+  illidanConfig.clientEntry[name] = [
     `./src/app/client/${name}.tsx`,
     `./src/app/pages/${name}/${name}.scss`,
   ];
   await fse.outputFile(
-    cronosConfigPath,
-    JSON.stringify(cronosConfig.clientEntry, null, 2),
+    illidanConfigPath,
+    JSON.stringify(illidanConfig.clientEntry, null, 2),
     'utf8',
   );
 
-  console.log('added entries hydrate at: ', cronosConfigPath);
+  console.log('added entries hydrate at: ', illidanConfigPath);
 }
 
 module.exports = run;
