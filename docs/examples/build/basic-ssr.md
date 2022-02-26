@@ -19,7 +19,7 @@ Add these scripts to your package.json scripts section
 
 Create your first router in `src/app/server.js`.
 ```jsx
-const { Router } = require('@conekta/illidan/server');
+const { Router } = require('@eslavadev/illidan/server');
 
 const router = Router();
 
@@ -38,12 +38,12 @@ module.exports = router;
 ```
 Init the app with your router in `src/index.js`.
 ```js
-const initApp = require('@conekta/illidan');
-const initMocks = require('@conekta/illidan/mocks');
+const initApp = require('@eslavadev/illidan');
+const initMocks = require('@eslavadev/illidan/mocks');
 const App = require('app/server')
 
 if (process.env.NODE_ENV === 'development') {
-    initMocks('https://panelb.conektame.io/*');
+    initMocks('https://127.0.0.1:3001/*');
 }
 
 initApp({

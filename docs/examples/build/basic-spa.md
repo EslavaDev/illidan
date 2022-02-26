@@ -74,7 +74,7 @@ module.exports = {
 npm run dev
 ```
 
-Your application is now served in: https://dev.conektame.io:9090
+Your application is now served in: https://127.0.0.1:9090
 
 ## Build for production
 

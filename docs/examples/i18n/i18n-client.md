@@ -3,7 +3,7 @@
 You can use i18n importing illidan utility
 
 ```jsx
-import { useTranslation } from '@conekta/illidan/i18n';
+import { useTranslation } from '@eslavadev/illidan/i18n';
 
 export const ExampleComponent = () => {
     const { t } = useTranslation()

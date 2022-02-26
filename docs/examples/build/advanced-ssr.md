@@ -43,7 +43,7 @@ export const ExampleView = () => {
 
 Create your client file in `src/app/pages/example/client.jsx`
 ```jsx
-import { hydrate } from '@conekta/illidan/client';
+import { hydrate } from '@eslavadev/illidan/client';
 import { ExampleView } from './view';
 
 hydrate(() => <ExampleView />);
@@ -74,7 +74,7 @@ export const ExampleController = (req, res) => {
 Create your app router in `src/app/server.js`
 
 ```jsx
-import { Router } from '@conekta/illidan/server';
+import { Router } from '@eslavadev/illidan/server';
 import { ExampleController } from './pages/example/controller';
 
 const router = Router();
@@ -86,7 +86,7 @@ module.exports = router;
 
 Init the app with your router in `src/index.js`.
 ```js
-import initApp from '@conekta/illidan';
+import initApp from '@eslavadev/illidan';
 import  App from 'app/server';
 
 initApp({

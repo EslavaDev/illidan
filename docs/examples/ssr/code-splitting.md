@@ -5,7 +5,7 @@ React 17 does not support dynamic imports in server rendering natively, illidan 
 ## How-to-use
 
 ```js
-import { loadable } from '@conekta/illidan/dynamic';
+import { loadable } from '@eslavadev/illidan/dynamic';
 
 const DynamicComponent = loadable(() => import('./dynamic-component'));
 

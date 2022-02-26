@@ -5,13 +5,13 @@ Illidan support Dynamic head (Static and SSR apps), follow these instructions to
 ## How-to-use
 
 ```js
-import Head from '@conekta/illidan/declarative/Head';
+import Head from '@eslavadev/illidan/declarative/Head';
 
 export const MainView = () => {
     return (
         <>
             <Head>
-                <script src={`${process.env.BASE_URL}v1.0/js/conekta-embedded-checkout.min.js`} />
+                <script src={`${process.env.BASE_URL}v1.0/js/illidan-embedded-checkout.min.js`} />
                 <script src={process.env.CARDINAL_SONGBIRD_URL} />
             </Head>
             <div>
@@ -24,7 +24,7 @@ export const MainView = () => {
 If for any reason you need to create inline scripts (We do not recommend it) you have to set the nonce attribute ([available in express request](../../api/extending-express.md#request)) due to we do not support inline-scripts without nonce attribute.
 
 ```js
-import Head from '@conekta/illidan/declarative/Head';
+import Head from '@eslavadev/illidan/declarative/Head';
 
 export const MainView = ({ nonce }) => {
     return (
